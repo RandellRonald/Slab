@@ -1,0 +1,2 @@
+# Slab
+SLAB connects customers with verified construction equipment and service providers through fast booking, transparent estimates, smart matching, real-time tracking, and reliable site operations across Kerala.
