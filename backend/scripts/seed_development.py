@@ -1,9 +1,13 @@
 """Idempotent, production-shaped local data for presenting the SLAB workflows."""
 from datetime import UTC, datetime, timedelta
+from pathlib import Path
+import sys
 from uuid import NAMESPACE_URL, uuid5
 
-from app.database.local import SessionLocal, User, get_user_by_email, init_local_database, pwd_context
-from app.database.local_client import LocalClient
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from app.database.local import SessionLocal, User, get_user_by_email, init_local_database, pwd_context, seed_auth_users
+from app.database.local_client import LocalClient, initialize_local_database
 
 SEED_NAMESPACE = NAMESPACE_URL
 
@@ -15,6 +19,8 @@ def upsert(client: LocalClient, table: str, key: str, values: dict) -> None:
 
 def main() -> None:
     init_local_database()
+    initialize_local_database()
+    seed_auth_users()
     customers_to_seed = [
         ("customer@slab.local", "Arjun Menon"),
         ("rahul.nair@slab.local", "Rahul Nair"),
@@ -23,6 +29,7 @@ def main() -> None:
         ("vivek.raj@slab.local", "Vivek Raj"),
         ("anjali.menon@slab.local", "Anjali Menon"),
     ]
+    customer_rows = []
     with SessionLocal.begin() as session:
         for email, name in customers_to_seed:
             user = get_user_by_email(session, email)
@@ -36,10 +43,10 @@ def main() -> None:
         admin = get_user_by_email(session, "admin@slab.local")
         if not customer or not provider or not admin:
             raise RuntimeError("Run the API once first so development auth users are created.")
+        customer_rows = [(get_user_by_email(session, email).id, name, email) for email, name in customers_to_seed if get_user_by_email(session, email)]
+        customer_id, provider_id, admin_id = customer.id, provider.id, admin.id
     client = LocalClient()
     now = datetime.now(UTC)
-    customer_rows = [(get_user_by_email(session, email).id, name, email) for email, name in customers_to_seed]
-    customer_id, provider_id, admin_id = customer.id, provider.id, admin.id
     for user_id, name, email in customer_rows:
         upsert(client, "profiles", f"profile-{user_id}", {"user_id": user_id, "role": "customer", "full_name": name, "email": email, "phone": "+91 90000 11000"})
     for user_id, role, name, email in [(provider_id, "provider", "Nikhil Rao", provider.email), (admin_id, "admin", "SLAB Operations", admin.email)]:

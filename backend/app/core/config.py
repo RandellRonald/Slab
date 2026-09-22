@@ -1,5 +1,6 @@
 from functools import lru_cache
 from typing import Literal
+from urllib.parse import urlparse
 
 from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -22,7 +23,7 @@ class Settings(BaseSettings):
     MAPS_USER_AGENT: str = "SLAB/0.2 contact@example.com"
     FRONTEND_BASE_URL: str = "http://localhost:5173"
     BACKEND_BASE_URL: str = "http://localhost:8000"
-    DATABASE_URL: str = "sqlite:///./slab_local_v2.db"
+    DATABASE_URL: str = "sqlite:///./slab_development.db"
 
 
     JWT_SECRET: str = "local-development-secret-change-in-production"
@@ -62,9 +63,27 @@ class Settings(BaseSettings):
                 )
                 if not getattr(self, key)
             ]
+            if not self.DATABASE_URL.startswith("postgresql") and self.DATABASE_URL == Settings.model_fields["DATABASE_URL"].default:
+                missing.append("DATABASE_URL")
             if missing:
                 joined = ", ".join(missing)
                 raise ValueError(f"Missing required production configuration: {joined}")
+
+            if not self.DATABASE_URL.startswith("postgresql"):
+                raise ValueError("DATABASE_URL must point to PostgreSQL in production.")
+
+            if self.JWT_SECRET == Settings.model_fields["JWT_SECRET"].default:
+                raise ValueError("JWT_SECRET must be changed in production.")
+
+            if self.PAYMENT_MODE == "mock":
+                raise ValueError("PAYMENT_MODE cannot be mock in production.")
+
+            if self.PRESENTATION_MODE:
+                raise ValueError("PRESENTATION_MODE must be disabled in production.")
+
+            urls = [self.FRONTEND_BASE_URL, self.BACKEND_BASE_URL, *self.CORS_ORIGINS]
+            if any(_is_local_url(url) for url in urls):
+                raise ValueError("Production URLs and CORS origins cannot use localhost or private development hosts.")
 
             if "*" in self.CORS_ORIGINS:
                 raise ValueError("CORS_ORIGINS cannot contain '*' in production.")
@@ -75,3 +94,8 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
+
+
+def _is_local_url(value: str) -> bool:
+    host = urlparse(value).hostname or ""
+    return host in {"localhost", "127.0.0.1", "0.0.0.0"} or host.startswith("192.168.") or host.startswith("10.")

@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button } from "../components/ui/Button";
 import { ErrorState } from "../components/ui/ErrorState";
@@ -54,13 +54,6 @@ export function LoginPage({ adminOnly = false, providerOnly = false }: { adminOn
           <Button type="button" variant="secondary" onClick={() => void onProviderSignIn("Google")} disabled={submitting}>Continue with Google</Button>
           <Button type="button" variant="secondary" onClick={() => void onProviderSignIn("Apple")} disabled={submitting}>Continue with Apple</Button>
         </div> : null}
-        {!adminOnly ? (
-          <div className="border-t border-slab-border pt-4 text-center text-sm text-slab-muted">
-            <Link className="font-bold text-slab-ink hover:text-slab-primaryStrong" to="/admin/login">
-              Admin Sign In
-            </Link>
-          </div>
-        ) : null}
       </form>
     </section>
   );

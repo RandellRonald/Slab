@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.engine import make_url
 
 from app.api.v1.router import api_router
 from app.api.realtime import router as realtime_router
@@ -8,6 +9,7 @@ from app.core.exceptions import register_exception_handlers
 from app.core.logging import configure_logging
 from app.middleware.request_context import RequestContextMiddleware
 from app.database.local import init_local_database
+from app.database.local_client import initialize_local_database
 
 
 def create_app() -> FastAPI:
@@ -22,7 +24,10 @@ def create_app() -> FastAPI:
         redoc_url="/redoc" if settings.ENVIRONMENT != "production" else None,
     )
     app.state.logger = logger
+    database_url = make_url(settings.DATABASE_URL)
+    logger.info("database backend active", extra={"database_driver": database_url.drivername, "database_host": database_url.host})
     init_local_database()
+    initialize_local_database()
 
     app.add_middleware(RequestContextMiddleware)
     app.add_middleware(

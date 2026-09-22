@@ -7,7 +7,6 @@ import { lazy, ReactNode, Suspense, useCallback, useEffect, useMemo, useRef, use
 import jcbMapMarker from "../assets/slab-jcb-map-marker.png";
 import { Button } from "../components/ui/Button";
 import { EquipmentCategoryCard, type EquipmentCategory } from "../components/landing/EquipmentCategoryCard";
-import { mapService } from "../services/customerService";
 import "../components/landing/landing-sections.css";
 
 const HeroScene = lazy(() => import("../components/landing/HeroScene").then((module) => ({ default: module.HeroScene })));
@@ -375,25 +374,8 @@ function LiveTrackingShowcase() {
     };
 
     const loadRoute = async () => {
-      let nextRoute = liveTrackingRoute;
-      let nextInfo = fallbackRouteInfo;
-      try {
-        const origin = toLatLng(providerCoordinate);
-        const destination = toLatLng(siteCoordinate);
-        const route = await mapService.route(origin, destination);
-        const geometry = route.geometry as { type?: string; coordinates?: number[][] } | undefined;
-        if (geometry?.type === "LineString" && Array.isArray(geometry.coordinates) && geometry.coordinates.length > 1) {
-          nextRoute = normalizeRouteEndpoints(
-            geometry.coordinates.map(([lng, lat]) => [Number(lng), Number(lat)] as [number, number]),
-            providerCoordinate,
-            siteCoordinate
-          );
-        }
-        nextInfo = { distance_km: Number(route.distance_km) || fallbackRouteInfo.distance_km, duration_minutes: Number(route.duration_minutes) || fallbackRouteInfo.duration_minutes, source: route.source };
-      } catch {
-        nextRoute = normalizeRouteEndpoints(liveTrackingRoute, providerCoordinate, siteCoordinate);
-        nextInfo = fallbackRouteInfo;
-      }
+      const nextRoute = normalizeRouteEndpoints(liveTrackingRoute, providerCoordinate, siteCoordinate);
+      const nextInfo = fallbackRouteInfo;
       if (cancelled) return;
       routeCoordinates.current = nextRoute;
       markerHeading.current = routeBearing(nextRoute, 0);
@@ -536,10 +518,6 @@ function sameCoordinate(a: [number, number] | undefined, b: [number, number]) {
 
 function dedupeAdjacentCoordinates(coordinates: [number, number][]) {
   return coordinates.filter((coordinate, index) => index === 0 || !sameCoordinate(coordinates[index - 1], coordinate));
-}
-
-function toLatLng([longitude, latitude]: [number, number]) {
-  return { latitude, longitude };
 }
 
 function interpolateRoute(coordinates: [number, number][], progress: number): [number, number] {

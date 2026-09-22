@@ -52,7 +52,7 @@ export function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<AuthenticatedLayout />}>
             <Route path="dashboard" element={<DashboardPage />} />
-            <Route element={<RoleProtectedRoute roles={["customer", "admin"]} />}>
+            <Route element={<RoleProtectedRoute roles={["customer"]} />}>
             <Route path="booking" element={<BookingPage />} />
               <Route path="booking/review" element={<BookingReviewPage />} />
               <Route path="booking/payment/success" element={<BookingPaymentPage />} />
@@ -62,7 +62,7 @@ export function App() {
               <Route path="booking/tracking" element={<BookingTrackingPage />} />
             </Route>
 
-            <Route element={<RoleProtectedRoute roles={["customer", "admin"]} />}>
+            <Route element={<RoleProtectedRoute roles={["customer"]} />}>
               <Route path="customer" element={<CustomerLayout />}>
                 <Route index element={<CustomerDashboardPage />} />
                 <Route path="workspace" element={<CustomerWorkspacePage />} />
