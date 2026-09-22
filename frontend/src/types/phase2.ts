@@ -22,6 +22,7 @@ export interface BookingItem {
 export interface PricingEstimate {
   currency: string;
   line_items: Array<BookingItem & { hourly_rate: number; operator_rate: number; line_total: number }>;
+  distance_km?: number;
   equipment_subtotal: number;
   travel_charge: number;
   emergency_service_charge?: number;

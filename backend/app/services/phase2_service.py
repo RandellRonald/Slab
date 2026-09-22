@@ -11,6 +11,7 @@ from app.database.client import get_service_database_client
 from app.database.repositories.base import DatabaseRepository
 from app.schemas.booking import BookingCancelRequest, BookingCreateRequest, BookingEstimateRequest, CustomerPinVerificationRequest
 from app.schemas.customer import CompanyCreate, ProjectCreate, ProjectNoteCreate, ProjectUpdate, SavedLocationCreate
+from app.services.matching_service import distance_km
 
 
 CATALOG = {
@@ -207,6 +208,7 @@ class PricingService:
         return {
             "currency": "INR",
             "line_items": line_items,
+            "distance_km": float(round(Decimal(str(payload.distance_km)), 2)),
             "equipment_subtotal": float(round(subtotal, 2)),
             "travel_charge": float(round(travel, 2)),
             "emergency_service_charge": float(round(emergency_service_charge, 2)),
@@ -223,7 +225,32 @@ class BookingService:
         self.pricing_service = pricing_service or PricingService()
 
     def estimate(self, payload: BookingEstimateRequest) -> dict:
-        return self.pricing_service.estimate(payload)
+        distance = payload.distance_km
+        if payload.site_location and payload.site_location.latitude is not None and payload.site_location.longitude is not None:
+            distance = self._nearest_provider_distance(payload) or distance
+        priced_payload = payload.model_copy(update={"distance_km": distance})
+        return self.pricing_service.estimate(priced_payload)
+
+    def _nearest_provider_distance(self, payload: BookingEstimateRequest) -> float | None:
+        equipment_types = [item.equipment_type for item in payload.items]
+        site = payload.site_location
+        if not site or site.latitude is None or site.longitude is None:
+            return None
+        response = (
+            self.client.table("provider_equipment")
+            .select("*")
+            .in_("equipment_type", equipment_types)
+            .eq("status", "available")
+            .execute()
+        )
+        distances = []
+        for equipment in response.data or []:
+            latitude = equipment.get("operating_latitude")
+            longitude = equipment.get("operating_longitude")
+            if latitude is None or longitude is None:
+                continue
+            distances.append(distance_km(float(latitude), float(longitude), float(site.latitude), float(site.longitude)))
+        return round(min(distances), 2) if distances else None
 
     def create_booking(self, user: AuthenticatedUser, payload: BookingCreateRequest) -> dict:
         starts_at = payload.starts_at if payload.starts_at.tzinfo else payload.starts_at.replace(tzinfo=UTC)
@@ -238,6 +265,7 @@ class BookingService:
             DatabaseRepository(self.client, "companies").get_owned(str(payload.company_id), str(user.user_id), "owner_user_id")
 
         pricing = self.estimate(payload)
+        pricing_snapshot = {**pricing, "distance_km": payload.distance_km}
         booking_status = "confirmed" if payload.is_emergency and Decimal(str(pricing.get("platform_fee") or 0)) == 0 else "payment_pending"
         booking = DatabaseRepository(self.client, "bookings").create(
             {
@@ -251,7 +279,7 @@ class BookingService:
                 "requirements": payload.requirements,
                 "notes": payload.notes,
                 "photo_urls": payload.photo_urls,
-                "pricing_snapshot": pricing,
+                "pricing_snapshot": pricing_snapshot,
             }
         )
         for item in payload.items:
@@ -345,6 +373,31 @@ class BookingService:
             .data
             or []
         )
+        provider_requests = (
+            self.client.table("provider_booking_requests")
+            .select("*")
+            .eq("booking_id", str(booking_id))
+            .order("rank")
+            .limit(5)
+            .execute()
+            .data
+            or []
+        )
+        primary_request = provider_requests[0] if provider_requests else None
+        request_distance = primary_request.get("distance_km") if primary_request else None
+        request_eta = primary_request.get("eta_minutes") if primary_request else None
+        pricing_snapshot = booking.get("pricing_snapshot") or {}
+        stored_distance = pricing_snapshot.get("distance_km")
+        matching_distance = request_distance if request_distance is not None else stored_distance
+        matching_eta = request_eta
+        if matching_eta is None and matching_distance is not None:
+            matching_eta = round((float(matching_distance) / 35) * 60)
+        matching_summary = {
+            "status": assignment.get("status") if assignment else (primary_request.get("status") if primary_request else booking.get("status")),
+            "requests_count": len(provider_requests),
+            "distance_km": matching_distance,
+            "eta_minutes": matching_eta,
+        }
         return {
             "booking": booking,
             "items": items,
@@ -358,6 +411,7 @@ class BookingService:
             "payment_otp_required": bool(booking.get("payment_otp_hash") and not booking.get("payment_verified_at")),
             "payment_otp_verified": bool(booking.get("payment_verified_at")),
             "job_pin": booking.get("job_pin_display"),
+            "matching_summary": matching_summary,
             "pin_required": bool(assignment and assignment.get("customer_pin_hash") and not assignment.get("customer_dispatch_verified_at")),
             "pin_verified": bool(assignment and assignment.get("customer_dispatch_verified_at")),
         }

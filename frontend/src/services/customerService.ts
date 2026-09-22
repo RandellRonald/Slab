@@ -39,6 +39,12 @@ export interface BookingExperience {
   payment?: Record<string, unknown> | null;
   status_history: Array<Record<string, unknown>>;
   notifications: Array<Record<string, unknown>>;
+  matching_summary?: {
+    status?: string | null;
+    requests_count?: number;
+    distance_km?: number | string | null;
+    eta_minutes?: number | string | null;
+  } | null;
   pin_required: boolean;
   pin_verified: boolean;
   job_pin?: string | null;
@@ -62,7 +68,7 @@ export const customerService = {
   getBooking: (bookingId: string) => request<Record<string, unknown>>(apiClient.get(`/customer/bookings/${bookingId}`)),
   getBookingExperience: (bookingId: string) => request<BookingExperience>(apiClient.get(`/customer/bookings/${bookingId}/experience`)),
   verifyBookingPin: (bookingId: string, pin: string) => request<{ verified: boolean }>(apiClient.post(`/customer/bookings/${bookingId}/verify-pin`, { pin })),
-  estimateBooking: (payload: { items: BookingItem[]; distance_km: number; is_emergency?: boolean }) =>
+  estimateBooking: (payload: { items: BookingItem[]; distance_km: number; site_location?: Address; is_emergency?: boolean }) =>
     request<PricingEstimate>(apiClient.post("/customer/bookings/estimate", payload)),
   createBooking: (payload: BookingInput) => request<{ id: string; status: string }>(apiClient.post("/customer/bookings", payload)),
   cancelBooking: (bookingId: string, reason: string) =>

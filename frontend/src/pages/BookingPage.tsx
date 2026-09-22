@@ -51,7 +51,7 @@ export function BookingPage() {
   async function calculate() {
     setError(null);
     try {
-      setEstimate(await customerService.estimateBooking({ items, distance_km: 18, is_emergency: isEmergency }));
+      setEstimate(await customerService.estimateBooking({ items, distance_km: 0, site_location: site, is_emergency: isEmergency }));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to calculate pricing.");
     }
@@ -130,7 +130,7 @@ export function BookingPage() {
         setError("Choose a start date and estimated duration before continuing.");
         return;
       }
-      navigate("/booking/review", { state: { project_id: projectId, project_name: projects.find((project) => project.id === projectId)?.project_name, items, site, starts_at: startsAt, ends_at: endsAt, estimated_duration_hours: scheduleDurationHours, requirements: String(form.get("requirements") ?? ""), notes: String(form.get("notes") ?? ""), estimate, is_emergency: isEmergency } });
+      navigate("/booking/review", { state: { project_id: projectId, project_name: projects.find((project) => project.id === projectId)?.project_name, items, site, starts_at: startsAt, ends_at: endsAt, estimated_duration_hours: scheduleDurationHours, distance_km: estimate.distance_km ?? 0, requirements: String(form.get("requirements") ?? ""), notes: String(form.get("notes") ?? ""), estimate, is_emergency: isEmergency } });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to create booking.");
     }

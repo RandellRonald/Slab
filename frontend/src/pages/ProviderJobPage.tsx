@@ -1,6 +1,6 @@
 import { FormEvent, PointerEvent, useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { MapPinned, MessageSquare, Phone } from "lucide-react";
+import { CheckCircle2, MapPinned, MessageSquare, Phone } from "lucide-react";
 
 import { Button } from "../components/ui/Button";
 import { EmptyState } from "../components/ui/EmptyState";
@@ -87,8 +87,8 @@ export function ProviderJobPage() {
             <h2 className="mt-2 text-2xl font-black text-slab-ink">{statusLabel(job.booking?.status)}</h2>
             {job.booking?.status === "assigned" ? <Button className="mt-5" onClick={() => void perform(() => providerService.markEnRoute(bookingId))}>Start navigation</Button> : null}
             {job.booking?.status === "provider_en_route" ? <SwipeConfirm label="Slide to confirm arrival" onConfirm={() => perform(() => providerService.markArrived(bookingId))} /> : null}
-            {job.booking?.status === "provider_arrived" ? <div className="mt-5 space-y-3"><p className="font-semibold text-slab-ink">Reached destination</p><div className="flex flex-wrap gap-2"><input className="min-h-10 w-36 rounded-md border border-slab-border px-3" inputMode="numeric" maxLength={6} value={pin} onChange={(event) => setPin(event.target.value.replace(/\D/g, ""))} placeholder="6-digit PIN" /><Button variant="secondary" onClick={() => void perform(async () => { await providerService.verifyPin(bookingId, pin); setPinVerified(true); })}>Verify PIN</Button></div>{pinVerified ? <SwipeConfirm label="Slide to start work" onConfirm={() => perform(() => providerService.startJob(bookingId))} /> : null}</div> : null}
-            {job.booking?.status === "in_progress" ? <div className="mt-5"><p className="font-bold text-slab-ink">Work time {elapsed(job.started_at, now)}</p><div className="mt-3 flex gap-2"><SwipeConfirm label="Slide to take a break" onConfirm={() => perform(() => providerService.takeBreak(bookingId))} /><SwipeConfirm label="Slide to finish work" onConfirm={() => perform(() => providerService.completeJob(bookingId))} /></div></div> : null}
+            {job.booking?.status === "provider_arrived" ? <ReachedSitePanel bookingId={bookingId} pin={pin} pinVerified={pinVerified} setPin={setPin} setPinVerified={setPinVerified} perform={perform} /> : null}
+            {job.booking?.status === "in_progress" ? <div className="mt-5 rounded-md border border-slab-border bg-yellow-50 p-4"><p className="text-sm font-black uppercase tracking-[0.14em] text-slab-primaryStrong">Work in progress</p><p className="mt-2 font-bold text-slab-ink">Work time {elapsed(job.started_at, now)}</p><div className="mt-3 flex gap-2"><SwipeConfirm label="Slide to take a break" onConfirm={() => perform(() => providerService.takeBreak(bookingId))} /><SwipeConfirm label="Slide to finish work" onConfirm={() => perform(() => providerService.completeJob(bookingId))} /></div></div> : null}
             {job.booking?.status === "on_break" ? <div className="mt-5"><p className="font-bold text-slab-ink">Work is paused</p><Button className="mt-3" onClick={() => void perform(() => providerService.resumeJob(bookingId))}>Resume work</Button></div> : null}
             {job.booking?.status === "completed" ? <CompletionSummary job={job} /> : null}
           </section>
@@ -127,6 +127,26 @@ export function ProviderJobPage() {
         </>
       ) : null}
     </section>
+  );
+}
+
+function ReachedSitePanel({ bookingId, pin, pinVerified, setPin, setPinVerified, perform }: { bookingId: string; pin: string; pinVerified: boolean; setPin: (value: string) => void; setPinVerified: (value: boolean) => void; perform: (action: () => Promise<unknown>) => Promise<void> }) {
+  return (
+    <div className="mt-5 rounded-md border border-slab-border bg-white p-4 shadow-soft">
+      <p className="text-sm font-black uppercase tracking-[0.14em] text-slab-primaryStrong">Reached site</p>
+      <h3 className="mt-2 text-xl font-black text-slab-ink">JCB / Backhoe has arrived at the job site.</h3>
+      <p className="mt-2 text-sm text-slab-muted">Ask the customer for their 6-digit Job PIN. The customer only shares the PIN; they do not enter it here.</p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <input className="min-h-11 w-44 rounded-md border border-slab-border px-3 tracking-[0.18em]" inputMode="numeric" maxLength={6} value={pin} onChange={(event) => setPin(event.target.value.replace(/\D/g, ""))} placeholder="6-digit Job PIN" aria-label="Enter 6-digit Job PIN" />
+        <Button variant="secondary" disabled={pin.length !== 6 || pinVerified} onClick={() => void perform(async () => { await providerService.verifyPin(bookingId, pin); setPinVerified(true); })}>Verify PIN</Button>
+      </div>
+      {pinVerified ? (
+        <div className="mt-4 rounded-md border border-slab-border bg-yellow-50 p-3">
+          <p className="flex items-center gap-2 font-bold text-slab-ink"><CheckCircle2 size={18} /> Location verified</p>
+          <SwipeConfirm label="START JOB" onConfirm={() => perform(() => providerService.startJob(bookingId))} />
+        </div>
+      ) : null}
+    </div>
   );
 }
 

@@ -31,6 +31,7 @@ class BookingItemRequest(BaseModel):
 class BookingEstimateRequest(BaseModel):
     items: list[BookingItemRequest] = Field(min_length=1, max_length=10)
     distance_km: float = Field(default=0, ge=0, le=2000)
+    site_location: Address | None = None
     is_emergency: bool = False
 
 

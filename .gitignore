@@ -37,3 +37,5 @@ tests/e2e/*.png
 # Local reports
 HOSTING_READINESS_REPORT.md
 SLAB_PROGRESS.md
+# Local Codex backups
+.codex-backups/

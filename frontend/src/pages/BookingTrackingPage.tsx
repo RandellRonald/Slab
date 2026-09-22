@@ -216,6 +216,20 @@ export function BookingTrackingPage() {
             <p className="mt-3 text-3xl font-black tracking-[0.24em] text-slab-ink">{jobPin || "------"}</p>
             <p className="mt-3 text-sm leading-6 text-slab-muted">Give this PIN to the provider only when they have arrived at your site.</p>
           </section>
+          {status === "provider_arrived" ? (
+            <section className="rounded-lg border border-slab-border bg-white p-5 shadow-soft">
+              <p className="text-sm font-black uppercase tracking-[0.14em] text-slab-primaryStrong">Reached site</p>
+              <h2 className="mt-2 text-xl font-black text-slab-ink">JCB / Backhoe has arrived at the job site.</h2>
+              <p className="mt-2 text-sm leading-6 text-slab-muted">Share the 6-digit Job PIN with your provider. The provider enters and verifies it before starting work.</p>
+            </section>
+          ) : null}
+          {status === "in_progress" ? (
+            <section className="rounded-lg border border-slab-border bg-white p-5 shadow-soft">
+              <p className="text-sm font-black uppercase tracking-[0.14em] text-slab-primaryStrong">Work in progress</p>
+              <h2 className="mt-2 text-xl font-black text-slab-ink">Your job has started.</h2>
+              <p className="mt-2 text-sm leading-6 text-slab-muted">The provider verified the Job PIN and marked the work as in progress.</p>
+            </section>
+          ) : null}
           <section className="rounded-lg border border-slab-border bg-white p-5 shadow-soft">
             <p className="text-sm font-bold uppercase text-slab-primaryStrong">Provider</p>
             <div className="mt-4 flex gap-3">
