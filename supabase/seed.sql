@@ -1,0 +1,12 @@
+-- Development seed strategy for SLAB Phase 1.
+--
+-- Supabase Auth users should be created through the Auth API or Dashboard so
+-- credentials and confirmation state remain owned by Supabase Auth.
+--
+-- Suggested local test users:
+-- - customer@slab.local
+-- - provider@slab.local
+-- - admin@slab.local
+--
+-- After creating users, insert matching profiles/customers/providers through
+-- controlled service-role scripts or the backend registration flow.
