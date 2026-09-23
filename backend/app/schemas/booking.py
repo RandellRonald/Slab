@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Literal
 from uuid import UUID
 
@@ -47,7 +47,9 @@ class BookingCreateRequest(BookingEstimateRequest):
 
     @model_validator(mode="after")
     def validate_time_range(self) -> "BookingCreateRequest":
-        if self.ends_at <= self.starts_at:
+        starts_at = self.starts_at if self.starts_at.tzinfo else self.starts_at.replace(tzinfo=UTC)
+        ends_at = self.ends_at if self.ends_at.tzinfo else self.ends_at.replace(tzinfo=UTC)
+        if ends_at <= starts_at:
             raise ValueError("ends_at must be after starts_at")
         return self
 

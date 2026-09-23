@@ -9,9 +9,9 @@ export interface ProviderRequest {
   estimated_amount?: number;
   request_payload?: Record<string, unknown>;
   customer?: { full_name?: string | null; email?: string | null } | null;
-  booking?: { site_location?: { line1?: string; latitude?: number; longitude?: number }; starts_at?: string; ends_at?: string } | null;
+  booking?: { site_location?: { line1?: string; city?: string; latitude?: number; longitude?: number }; starts_at?: string; ends_at?: string; pricing_snapshot?: Record<string, unknown> } | null;
   items?: Array<{ equipment_type?: string; quantity?: number; duration_hours?: number }>;
-  equipment?: { display_name?: string } | null;
+  equipment?: { display_name?: string; operating_latitude?: number; operating_longitude?: number } | null;
 }
 
 export interface JobAssignment {

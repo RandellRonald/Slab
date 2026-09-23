@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Button } from "../components/ui/Button";
 import { ErrorState } from "../components/ui/ErrorState";
@@ -53,6 +53,14 @@ export function RegisterPage({ provider = false }: { provider?: boolean }) {
           <input className="mt-2 w-full rounded-md border border-slab-border px-3 py-2" name="password" type="password" required minLength={8} />
         </label>
         <Button className="w-full" disabled={submitting}>{submitting ? "Creating account" : "Create account"}</Button>
+        {provider ? (
+          <div className="border-t border-slab-border pt-4 text-center">
+            <p className="text-sm font-semibold text-slab-muted">Already a provider?</p>
+            <Link className="mt-3 block" to="/provider/login">
+              <Button className="w-full" type="button" variant="secondary">Sign In</Button>
+            </Link>
+          </div>
+        ) : null}
       </form>
     </section>
   );

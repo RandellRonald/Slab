@@ -274,6 +274,7 @@ export function HomePage() {
         <strong className="text-slab-ink">SLAB</strong>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
           <span>Equipment access built for real job sites.</span>
+          <Link className="font-semibold text-slab-ink hover:text-slab-primaryStrong" to="/support">Contact & Support</Link>
           <Link className="font-semibold text-slab-ink hover:text-slab-primaryStrong" to="/admin/login">Admin sign in</Link>
         </div>
       </footer>

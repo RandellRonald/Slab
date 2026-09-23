@@ -35,6 +35,14 @@ class ProviderService:
 
     def dashboard(self, user: AuthenticatedUser) -> dict[str, Any]:
         provider = self._provider_row(str(user.user_id))
+        settings = get_settings()
+        if (
+            settings.PRESENTATION_MODE
+            and settings.ENVIRONMENT != "production"
+            and not provider.get("is_online")
+            and not provider.get("status_updated_at")
+        ):
+            provider = self.update_online_status(user, ProviderStatusUpdate(is_online=True))
         verification = self._maybe_one("provider_verifications", "provider_user_id", str(user.user_id))
         equipment = DatabaseRepository(self.client, "provider_equipment").list_for_user(str(user.user_id), "provider_user_id")
         requests = DatabaseRepository(self.client, "provider_booking_requests").list_for_user(str(user.user_id), "provider_user_id")
@@ -62,7 +70,12 @@ class ProviderService:
         }
 
     def update_online_status(self, user: AuthenticatedUser, payload: ProviderStatusUpdate) -> dict:
-        response = self.client.table("providers").update({"is_online": payload.is_online}).eq("user_id", str(user.user_id)).execute()
+        response = (
+            self.client.table("providers")
+            .update({"is_online": payload.is_online, "status_updated_at": datetime.now(UTC).isoformat()})
+            .eq("user_id", str(user.user_id))
+            .execute()
+        )
         if not response.data:
             raise NotFoundError("Provider profile not found.")
         return response.data[0]

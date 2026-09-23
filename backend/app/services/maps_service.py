@@ -32,29 +32,48 @@ class MapsService:
             return response.json()
 
     async def reverse_geocode(self, payload: ReverseGeocodeRequest) -> dict[str, Any]:
-        async with httpx.AsyncClient(timeout=8) as client:
-            response = await client.get(
-                f"{self.settings.NOMINATIM_BASE_URL}/reverse",
-                params={"lat": payload.latitude, "lon": payload.longitude, "format": "jsonv2", "addressdetails": 1},
-                headers={"User-Agent": self.settings.MAPS_USER_AGENT},
-            )
-            response.raise_for_status()
-            raw = response.json()
-            address = raw.get("address", {})
-            road = " ".join(filter(None, [address.get("house_number"), address.get("road")]))
-            area = address.get("neighbourhood") or address.get("suburb") or address.get("village") or address.get("town") or ""
-            city = address.get("city") or address.get("town") or address.get("municipality") or area
-            return {
-                "latitude": payload.latitude,
-                "longitude": payload.longitude,
-                "address": road or raw.get("display_name", ""),
-                "area_locality": area,
-                "city": city,
-                "district": address.get("county") or address.get("district") or "",
-                "state": address.get("state") or "",
-                "postal_code": address.get("postcode") or "",
-                "display_name": raw.get("display_name", ""),
-            }
+        try:
+            async with httpx.AsyncClient(timeout=8) as client:
+                response = await client.get(
+                    f"{self.settings.NOMINATIM_BASE_URL}/reverse",
+                    params={"lat": payload.latitude, "lon": payload.longitude, "format": "jsonv2", "addressdetails": 1},
+                    headers={"User-Agent": self.settings.MAPS_USER_AGENT},
+                )
+                response.raise_for_status()
+                raw = response.json()
+        except httpx.HTTPError:
+            return self._reverse_geocode_fallback(payload)
+
+        address = raw.get("address", {})
+        road = " ".join(filter(None, [address.get("house_number"), address.get("road")]))
+        area = address.get("neighbourhood") or address.get("suburb") or address.get("village") or address.get("town") or ""
+        city = address.get("city") or address.get("town") or address.get("municipality") or area
+        return {
+            "latitude": payload.latitude,
+            "longitude": payload.longitude,
+            "address": road or raw.get("display_name", ""),
+            "area_locality": area,
+            "city": city,
+            "district": address.get("county") or address.get("district") or "",
+            "state": address.get("state") or "",
+            "postal_code": address.get("postcode") or "",
+            "display_name": raw.get("display_name", ""),
+        }
+
+    def _reverse_geocode_fallback(self, payload: ReverseGeocodeRequest) -> dict[str, Any]:
+        display = f"{payload.latitude:.6f}, {payload.longitude:.6f}"
+        return {
+            "latitude": payload.latitude,
+            "longitude": payload.longitude,
+            "address": display,
+            "area_locality": "",
+            "city": "",
+            "district": "",
+            "state": "",
+            "postal_code": "",
+            "display_name": display,
+            "source": "coordinate_fallback",
+        }
 
     async def route(self, payload: RouteRequest) -> dict[str, Any]:
         coords = (

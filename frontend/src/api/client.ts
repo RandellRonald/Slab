@@ -48,6 +48,14 @@ export async function request<T>(promise: Promise<{ data: ApiEnvelope<T> }>): Pr
       throw new ApiClientError(apiError.code, apiError.message, axiosError.response.status);
     }
 
+    if (axiosError.response) {
+      throw new ApiClientError(
+        "HTTP_ERROR",
+        `The SLAB API returned an unexpected response (${axiosError.response.status}).`,
+        axiosError.response.status
+      );
+    }
+
     throw new ApiClientError("NETWORK_ERROR", "Unable to reach the SLAB API.");
   }
 }

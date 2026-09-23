@@ -15,6 +15,7 @@ import { NotFoundPage } from "../pages/NotFoundPage";
 import { ProviderDashboardPage } from "../pages/ProviderDashboardPage";
 import { ProviderJobPage } from "../pages/ProviderJobPage";
 import { RegisterPage } from "../pages/RegisterPage";
+import { SupportPage } from "../pages/SupportPage";
 import { UnauthorizedPage } from "../pages/UnauthorizedPage";
 import { ProtectedRoute } from "../routes/ProtectedRoute";
 import { RoleProtectedRoute } from "../routes/RoleProtectedRoute";
@@ -46,6 +47,7 @@ export function App() {
           <Route path="provider/register" element={<RegisterPage provider />} />
           <Route path="equipment" element={<MarketplaceEquipmentPage />} />
           <Route path="equipment/:category" element={<MarketplaceEquipmentPage />} />
+          <Route path="support" element={<SupportPage />} />
           <Route path="unauthorized" element={<UnauthorizedPage />} />
         </Route>
 

@@ -1,4 +1,4 @@
-import { ArrowRight, LogOut, Menu, Search, X } from "lucide-react";
+import { ArrowRight, LogOut, Search, X } from "lucide-react";
 import { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
@@ -11,6 +11,7 @@ const landingLinks = [
   { label: "Find Equipment", to: "/equipment" },
   { label: "How It Works", hash: "how-it-works" },
   { label: "For Providers", to: "/provider/register" },
+  { label: "Contact & Support", to: "/support" },
   { label: "About", hash: "about" }
 ];
 
@@ -22,17 +23,12 @@ export function Header() {
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [catalog, setCatalog] = useState<MarketplaceEquipment[]>([]);
   const [catalogError, setCatalogError] = useState<string | null>(null);
   const searchInput = useRef<HTMLInputElement>(null);
   const landingPage = location.pathname === "/";
-
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [location.pathname, location.hash]);
 
   useEffect(() => {
     if (!searchOpen) return;
@@ -78,33 +74,24 @@ export function Header() {
     if (event.key === "Escape") setSearchOpen(false);
   }
 
-  const navClass = (active: boolean) => `slab-nav-link border-b-2 py-2 text-[13px] font-semibold transition ${active ? "border-slab-primary text-slab-ink" : "border-transparent text-slab-muted hover:border-slab-primary hover:text-slab-ink"}`;
+  const navClass = (active: boolean) => `slab-nav-link whitespace-nowrap border-b-2 py-2 font-semibold leading-none transition ${active ? "border-slab-primary text-slab-ink" : "border-transparent text-slab-muted hover:border-slab-primary hover:text-slab-ink"}`;
 
   return (
     <header className="slab-header sticky top-0 z-40 border-b border-slab-border bg-white/95 backdrop-blur-sm">
-      <div className={`mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 ${landingPage ? "h-[76px]" : "h-16"}`}>
-        <Link aria-label="SLAB home" to="/" className="slab-brand text-xl font-black tracking-normal text-slab-ink">SLAB<span aria-hidden="true">.</span></Link>
-        <nav aria-label="Landing page" className="hidden items-center gap-6 min-[900px]:flex">
+      <div className={`slab-header-inner mx-auto flex max-w-7xl items-center justify-between ${landingPage ? "h-[76px]" : "h-16"}`}>
+        <Link aria-label="SLAB home" to="/" className="slab-brand shrink-0 text-xl font-black tracking-normal text-slab-ink">SLAB<span aria-hidden="true">.</span></Link>
+        <nav aria-label="Landing page" className="slab-desktop-nav min-w-0 flex-1 items-center justify-center">
           {landingLinks.map((item) => item.hash ? (
             <button key={item.label} className={navClass(isLandingHashActive(location.pathname, location.hash, item.hash))} onClick={() => scrollToSection(item.hash!)} type="button">{item.label}</button>
           ) : (
             <NavLink key={item.label} end={item.exact} className={({ isActive }) => navClass(isActive && (item.exact || location.pathname.startsWith(item.to!)))} to={item.to!}>{item.label}</NavLink>
           ))}
         </nav>
-        <nav aria-label="Account actions" className="hidden items-center gap-2 text-sm sm:flex">
-          <button aria-label="Search equipment" className="rounded-md p-2 text-slab-muted transition hover:bg-slate-50 hover:text-slab-ink" onClick={openSearch} type="button"><Search size={19} /></button>
-          {user ? <><NavLink className="px-3 py-2 font-medium text-slab-muted hover:text-slab-ink" to="/dashboard">Dashboard</NavLink><Button variant="secondary" onClick={() => void logout()}><LogOut size={16} />Logout</Button></> : <><NavLink className="px-3 py-2 font-medium text-slab-muted hover:text-slab-ink" to="/login">Sign In</NavLink><Link to="/equipment"><Button>Get Started</Button></Link></>}
+        <nav aria-label="Account actions" className="slab-account-nav shrink-0 items-center whitespace-nowrap">
+          <button aria-label="Search equipment" className="slab-header-icon rounded-md text-slab-muted transition hover:bg-slate-50 hover:text-slab-ink" onClick={openSearch} type="button"><Search size={19} /></button>
+          {user ? <><NavLink className="slab-header-action font-medium text-slab-muted hover:text-slab-ink" to="/dashboard">Dashboard</NavLink><Button className="slab-header-cta" variant="secondary" onClick={() => void logout()}><LogOut size={16} />Logout</Button></> : <><NavLink className="slab-header-action font-medium text-slab-muted hover:text-slab-ink" to="/login">Sign In</NavLink><Link to="/equipment"><Button className="slab-header-cta">Get Started</Button></Link></>}
         </nav>
-        <button aria-expanded={menuOpen} aria-label={menuOpen ? "Close navigation" : "Open navigation"} className="rounded-md p-2 text-slab-ink sm:hidden" onClick={() => setMenuOpen((open) => !open)} type="button">{menuOpen ? <X /> : <Menu />}</button>
       </div>
-
-      {menuOpen ? <div className="border-t border-slab-border bg-white px-4 py-4 shadow-soft sm:hidden">
-        <nav aria-label="Mobile navigation" className="grid gap-1">
-          {landingLinks.map((item) => item.hash ? <button className="rounded-md px-3 py-3 text-left font-semibold text-slab-ink hover:bg-slate-50" key={item.label} onClick={() => scrollToSection(item.hash!)} type="button">{item.label}</button> : <Link className="rounded-md px-3 py-3 font-semibold text-slab-ink hover:bg-slate-50" key={item.label} to={item.to!}>{item.label}</Link>)}
-          <button className="flex items-center gap-2 rounded-md px-3 py-3 text-left font-semibold text-slab-ink hover:bg-slate-50" onClick={() => { setMenuOpen(false); openSearch(); }} type="button"><Search size={17} />Search equipment</button>
-          {user ? <><Link className="rounded-md px-3 py-3 font-semibold text-slab-ink hover:bg-slate-50" to="/dashboard">Dashboard</Link><button className="rounded-md px-3 py-3 text-left font-semibold text-slab-ink hover:bg-slate-50" onClick={() => void logout()} type="button">Log out</button></> : <><Link className="rounded-md px-3 py-3 font-semibold text-slab-ink hover:bg-slate-50" to="/login">Sign In</Link><Link className="mt-2" to="/equipment"><Button className="w-full">Get Started</Button></Link></>}
-        </nav>
-      </div> : null}
 
       {searchOpen ? <div aria-modal="true" className="fixed inset-0 z-50 flex items-start justify-center bg-slate-950/25 p-4 pt-20" onMouseDown={() => setSearchOpen(false)} role="dialog">
         <section className="w-full max-w-2xl rounded-lg border border-slab-border bg-white p-5 shadow-soft" onMouseDown={(event) => event.stopPropagation()}>
