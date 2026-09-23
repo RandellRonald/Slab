@@ -39,3 +39,8 @@ HOSTING_READINESS_REPORT.md
 SLAB_PROGRESS.md
 # Local Codex backups
 .codex-backups/
+
+backend/.venv/
+
+PRODUCTION_TEST_REPORT.md
+tests/
