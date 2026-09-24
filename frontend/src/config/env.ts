@@ -5,6 +5,13 @@ const backendHost =
     : browserHost;
 const wsProtocol = globalThis.location?.protocol === "https:" ? "wss" : "ws";
 const frontendHost = globalThis.location?.host;
+const apiUrl =  import.meta.env.VITE_BACKEND_API_URL;
+
+if (!apiUrl) {
+  throw new Error("VITE_BACKEND_API_URL is not configured.");
+}
+
+export const API_BASE_URL = apiUrl.replace(/\/$/, "");
 
 export const env = {
   apiUrl: import.meta.env.VITE_BACKEND_API_URL ?? "/api/v1",
