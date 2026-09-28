@@ -1,14 +1,14 @@
-# SLAB
+ï»¿# SLAB
 
 **Construction equipment booking and site coordination platform for equipment providers and contractors.**
 
-**[Live Application](https://slab-topaz.vercel.app/)** &nbsp;·&nbsp; Built for construction equipment workflows in regional Indian markets
+**[Live Application](https://slab-topaz.vercel.app/)** &nbsp;Â·&nbsp; Built for construction equipment workflows in regional Indian markets
 
 ---
 
 ## What Is SLAB?
 
-SLAB is a full-stack marketplace that connects contractors and site managers with verified construction equipment providers. Customers can discover available equipment, get a transparent cost estimate, place a booking, and then track the provider's journey to the site — all from a single application.
+SLAB is a full-stack marketplace that connects contractors and site managers with verified construction equipment providers. Customers can discover available equipment, get a transparent cost estimate, place a booking, and then track the provider's journey to the site â€” all from a single application.
 
 The project covers the complete operational lifecycle of an equipment booking: from marketplace discovery through payment, provider dispatch, live GPS tracking, on-site PIN verification, and project-level cost reporting.
 
@@ -112,7 +112,7 @@ SLAB structures the end-to-end workflow between contractors and providers into a
 *The dedicated support desk provides contextual help and features an always-available interactive construction assistant chatbot for instant booking guidance.*
 
 ### Authentication
-![Authentication](docs/screenshots/auth.png)
+![Authentication](docs/screenshots/customer-signin.png)
 *Three-role authentication (Customer, Provider, Admin) with JWT tokens and role-based access control. Separate sign-in paths enforce the correct role context.*
 
 ------------
@@ -200,7 +200,7 @@ sequenceDiagram
 
 ## Emergency Booking
 
-Emergency bookings skip the standard payment-pending state and go directly to provider dispatch. The pricing formula applies an emergency service surcharge — the greater of 15% of the equipment subtotal or ?750 — and waives the standard platform fee. The matching engine notifies providers with an "URGENT REQUEST" alert and expands the search radius progressively when nearby providers are unavailable.
+Emergency bookings skip the standard payment-pending state and go directly to provider dispatch. The pricing formula applies an emergency service surcharge â€” the greater of 15% of the equipment subtotal or ?750 â€” and waives the standard platform fee. The matching engine notifies providers with an "URGENT REQUEST" alert and expands the search radius progressively when nearby providers are unavailable.
 
 ---
 
@@ -211,14 +211,14 @@ All pricing is computed server-side by `PricingService`. The client never calcul
 ```
 Estimate = Sum( (HourlyRate + OperatorRate) x Hours x Quantity )
          + Distance x Rs3.25 per km
-         + EmergencySurcharge (15% of equipment subtotal, min Rs750 — emergency only)
-         + PlatformFee (8% of subtotal + travel — standard bookings only)
+         + EmergencySurcharge (15% of equipment subtotal, min Rs750 â€” emergency only)
+         + PlatformFee (8% of subtotal + travel â€” standard bookings only)
 ```
 
 Key design choices:
 - **Operator rate** is ?35/hour per item when an operator is requested.
 - **Distance** is calculated using the Haversine formula against the nearest available provider's operating location, not a fixed origin.
-- **Emergency and platform fees are mutually exclusive** — emergency bookings pay the surcharge instead of the platform fee.
+- **Emergency and platform fees are mutually exclusive** â€” emergency bookings pay the surcharge instead of the platform fee.
 - The pricing snapshot is stored on the booking at creation time, so historical estimates are never recalculated retroactively.
 
 ---
@@ -227,8 +227,8 @@ Key design choices:
 
 SLAB uses a two-tier payment model:
 
-1. **Platform fee** — Charged upfront via Stripe. This covers booking processing and provider matching. Stripe webhooks confirm payment before the booking proceeds.
-2. **Service cost** — The equipment + operator + travel cost is settled directly between the contractor and provider. SLAB records the estimate but does not hold or process the full service amount.
+1. **Platform fee** â€” Charged upfront via Stripe. This covers booking processing and provider matching. Stripe webhooks confirm payment before the booking proceeds.
+2. **Service cost** â€” The equipment + operator + travel cost is settled directly between the contractor and provider. SLAB records the estimate but does not hold or process the full service amount.
 
 This keeps the platform lightweight, avoids escrow complexity, and is consistent with how regional equipment hiring currently operates.
 
@@ -239,7 +239,7 @@ This keeps the platform lightweight, avoids escrow complexity, and is consistent
 ## Location Intelligence
 
 ### Maps & Rendering
-- **MapLibre GL** renders interactive maps in the browser with OpenStreetMap tile layers — no Google Maps dependency.
+- **MapLibre GL** renders interactive maps in the browser with OpenStreetMap tile layers â€” no Google Maps dependency.
 - Customers select their construction site by clicking a map pin or by text search; the site GPS coordinate is stored with the booking.
 
 ### Geocoding
@@ -263,9 +263,9 @@ Live tracking uses a persistent WebSocket connection over `/ws/tracking/{booking
 - **Room isolation:** Each booking has its own tracking room keyed by `tracking:{booking_id}`, preventing cross-booking data leakage.
 
 Additional WebSocket channels:
-- `/ws/chat/{booking_id}` — Real-time booking-scoped chat between customer and provider.
-- `/ws/notifications/{user_id}` — Push notifications for job requests, booking status changes, and system alerts.
-- `/ws/provider-status/{provider_id}` — Broadcasts provider online/offline status to subscribed watchers.
+- `/ws/chat/{booking_id}` â€” Real-time booking-scoped chat between customer and provider.
+- `/ws/notifications/{user_id}` â€” Push notifications for job requests, booking status changes, and system alerts.
+- `/ws/provider-status/{provider_id}` â€” Broadcasts provider online/offline status to subscribed watchers.
 
 ---
 
@@ -312,8 +312,8 @@ Providers can also:
 
 When a booking enters the `confirmed` state, the `MatchingService` identifies eligible providers and creates `provider_booking_requests`. For each request, it inserts a notification record:
 
-- **Standard booking:** "New SLAB booking request — a nearby booking is waiting for your response."
-- **Emergency booking:** "URGENT REQUEST — Emergency service needed nearby."
+- **Standard booking:** "New SLAB booking request â€” a nearby booking is waiting for your response."
+- **Emergency booking:** "URGENT REQUEST â€” Emergency service needed nearby."
 
 Notifications are delivered over the `/ws/notifications/{user_id}` WebSocket channel. The matching engine considers up to 10 ranked candidates per booking, sorted by distance (ascending) and estimated amount (descending). If no eligible provider is found, the customer receives a "No provider available" notification.
 
@@ -393,7 +393,7 @@ Distances are first calculated using the Haversine formula for matching and pric
 Each real-time channel uses a keyed room string (`tracking:{booking_id}`, `notifications:{user_id}`, etc.). The `ConnectionManager` maps room keys to sets of connected WebSocket clients, so broadcasts are scoped correctly and never leak across bookings or users.
 
 **5. Zero Commercial Map Dependency**
-The entire geospatial stack — rendering, geocoding, and routing — is built on open-source tools (MapLibre GL, Nominatim, OSRM, OpenStreetMap). This eliminates per-request billing from commercial map APIs.
+The entire geospatial stack â€” rendering, geocoding, and routing â€” is built on open-source tools (MapLibre GL, Nominatim, OSRM, OpenStreetMap). This eliminates per-request billing from commercial map APIs.
 
 ---
 
@@ -416,15 +416,15 @@ The entire geospatial stack — rendering, geocoding, and routing — is built on op
 | Data validation | Pydantic v2 | 2.10 |
 | Settings | pydantic-settings | 2.7 |
 | Database migrations | Alembic | 1.14 |
-| Database | PostgreSQL 13+ / SQLite (local dev) | — |
+| Database | PostgreSQL 13+ / SQLite (local dev) | â€” |
 | Authentication | PyJWT + passlib (bcrypt) | 2.10 / 1.7 |
 | Payment processing | Stripe Python SDK | 11.5 |
 | Geocoding / routing | Nominatim + OSRM | OpenStreetMap |
 | HTTP async client | httpx | 0.28 |
 | Testing (backend) | pytest + httpx | 8.3 |
 | Testing (frontend) | Vitest + Testing Library | 5 / 16 |
-| Frontend hosting | Vercel | — |
-| Backend hosting | Render | — |
+| Frontend hosting | Vercel | â€” |
+| Backend hosting | Render | â€” |
 
 ---
 
@@ -433,72 +433,72 @@ The entire geospatial stack — rendering, geocoding, and routing — is built on op
 ```
 slab/
 +-- backend/
-¦   +-- app/
-¦   ¦   +-- api/
-¦   ¦   ¦   +-- realtime.py           # WebSocket routes (tracking, chat, notifications)
-¦   ¦   ¦   +-- v1/
-¦   ¦   ¦       +-- router.py
-¦   ¦   ¦       +-- endpoints/
-¦   ¦   ¦           +-- auth.py
-¦   ¦   ¦           +-- marketplace.py
-¦   ¦   ¦           +-- customer_workspace.py
-¦   ¦   ¦           +-- provider_workspace.py
-¦   ¦   ¦           +-- payments.py
-¦   ¦   ¦           +-- maps.py
-¦   ¦   ¦           +-- admin.py
-¦   ¦   ¦           +-- health.py
-¦   ¦   +-- auth/
-¦   ¦   ¦   +-- service.py            # JWT issuance, login, register
-¦   ¦   ¦   +-- dependencies.py       # FastAPI auth dependencies
-¦   ¦   ¦   +-- schemas.py
-¦   ¦   +-- core/
-¦   ¦   ¦   +-- config.py             # pydantic-settings (env vars)
-¦   ¦   ¦   +-- exceptions.py         # AppException hierarchy + handlers
-¦   ¦   ¦   +-- logging.py
-¦   ¦   +-- database/
-¦   ¦   ¦   +-- client.py             # Database client factory
-¦   ¦   ¦   +-- local.py              # Auth user table (SQLAlchemy ORM)
-¦   ¦   ¦   +-- local_client.py       # Document-store client over SQLAlchemy
-¦   ¦   ¦   +-- models.py             # slab_records table
-¦   ¦   ¦   +-- repositories/
-¦   ¦   ¦       +-- base.py           # Generic CRUD repository
-¦   ¦   +-- middleware/
-¦   ¦   ¦   +-- request_context.py    # Request ID injection
-¦   ¦   +-- schemas/                  # Pydantic request/response models
-¦   ¦   +-- services/
-¦   ¦   ¦   +-- matching_service.py   # Provider matching + Haversine distance
-¦   ¦   ¦   +-- phase2_service.py     # Pricing, booking, project workspace
-¦   ¦   ¦   +-- provider_service.py   # Provider workflow + PIN verification
-¦   ¦   ¦   +-- maps_service.py       # Nominatim + OSRM integration
-¦   ¦   ¦   +-- payment_service.py    # Stripe integration
-¦   ¦   ¦   +-- realtime_service.py   # WebSocket connection manager
-¦   ¦   +-- main.py                   # FastAPI app factory
-¦   +-- alembic/                      # Database migrations
-¦   +-- tests/
-¦   +-- requirements.txt
-¦   +-- .env.example
+Â¦   +-- app/
+Â¦   Â¦   +-- api/
+Â¦   Â¦   Â¦   +-- realtime.py           # WebSocket routes (tracking, chat, notifications)
+Â¦   Â¦   Â¦   +-- v1/
+Â¦   Â¦   Â¦       +-- router.py
+Â¦   Â¦   Â¦       +-- endpoints/
+Â¦   Â¦   Â¦           +-- auth.py
+Â¦   Â¦   Â¦           +-- marketplace.py
+Â¦   Â¦   Â¦           +-- customer_workspace.py
+Â¦   Â¦   Â¦           +-- provider_workspace.py
+Â¦   Â¦   Â¦           +-- payments.py
+Â¦   Â¦   Â¦           +-- maps.py
+Â¦   Â¦   Â¦           +-- admin.py
+Â¦   Â¦   Â¦           +-- health.py
+Â¦   Â¦   +-- auth/
+Â¦   Â¦   Â¦   +-- service.py            # JWT issuance, login, register
+Â¦   Â¦   Â¦   +-- dependencies.py       # FastAPI auth dependencies
+Â¦   Â¦   Â¦   +-- schemas.py
+Â¦   Â¦   +-- core/
+Â¦   Â¦   Â¦   +-- config.py             # pydantic-settings (env vars)
+Â¦   Â¦   Â¦   +-- exceptions.py         # AppException hierarchy + handlers
+Â¦   Â¦   Â¦   +-- logging.py
+Â¦   Â¦   +-- database/
+Â¦   Â¦   Â¦   +-- client.py             # Database client factory
+Â¦   Â¦   Â¦   +-- local.py              # Auth user table (SQLAlchemy ORM)
+Â¦   Â¦   Â¦   +-- local_client.py       # Document-store client over SQLAlchemy
+Â¦   Â¦   Â¦   +-- models.py             # slab_records table
+Â¦   Â¦   Â¦   +-- repositories/
+Â¦   Â¦   Â¦       +-- base.py           # Generic CRUD repository
+Â¦   Â¦   +-- middleware/
+Â¦   Â¦   Â¦   +-- request_context.py    # Request ID injection
+Â¦   Â¦   +-- schemas/                  # Pydantic request/response models
+Â¦   Â¦   +-- services/
+Â¦   Â¦   Â¦   +-- matching_service.py   # Provider matching + Haversine distance
+Â¦   Â¦   Â¦   +-- phase2_service.py     # Pricing, booking, project workspace
+Â¦   Â¦   Â¦   +-- provider_service.py   # Provider workflow + PIN verification
+Â¦   Â¦   Â¦   +-- maps_service.py       # Nominatim + OSRM integration
+Â¦   Â¦   Â¦   +-- payment_service.py    # Stripe integration
+Â¦   Â¦   Â¦   +-- realtime_service.py   # WebSocket connection manager
+Â¦   Â¦   +-- main.py                   # FastAPI app factory
+Â¦   +-- alembic/                      # Database migrations
+Â¦   +-- tests/
+Â¦   +-- requirements.txt
+Â¦   +-- .env.example
 +-- frontend/
-¦   +-- src/
-¦   ¦   +-- api/
-¦   ¦   ¦   +-- client.ts             # Axios instance + error normalisation
-¦   ¦   +-- pages/                    # Route-level components
-¦   ¦   +-- components/               # Shared UI components
-¦   ¦   +-- features/                 # Feature-scoped modules
-¦   ¦   +-- hooks/                    # Custom React hooks
-¦   ¦   +-- services/                 # API call wrappers
-¦   ¦   +-- types/                    # TypeScript interfaces
-¦   ¦   +-- config/
-¦   ¦   ¦   +-- env.ts                # Runtime environment config
-¦   ¦   +-- support/                  # Support chatbot module
-¦   +-- vite.config.ts
-¦   +-- package.json
-¦   +-- .env.example
+Â¦   +-- src/
+Â¦   Â¦   +-- api/
+Â¦   Â¦   Â¦   +-- client.ts             # Axios instance + error normalisation
+Â¦   Â¦   +-- pages/                    # Route-level components
+Â¦   Â¦   +-- components/               # Shared UI components
+Â¦   Â¦   +-- features/                 # Feature-scoped modules
+Â¦   Â¦   +-- hooks/                    # Custom React hooks
+Â¦   Â¦   +-- services/                 # API call wrappers
+Â¦   Â¦   +-- types/                    # TypeScript interfaces
+Â¦   Â¦   +-- config/
+Â¦   Â¦   Â¦   +-- env.ts                # Runtime environment config
+Â¦   Â¦   +-- support/                  # Support chatbot module
+Â¦   +-- vite.config.ts
+Â¦   +-- package.json
+Â¦   +-- .env.example
 +-- docs/
-¦   +-- API.md
-¦   +-- ARCHITECTURE.md
-¦   +-- DATABASE.md
-¦   +-- STRIPE.md
-¦   +-- screenshots/
+Â¦   +-- API.md
+Â¦   +-- ARCHITECTURE.md
+Â¦   +-- DATABASE.md
+Â¦   +-- STRIPE.md
+Â¦   +-- screenshots/
 +-- docker-compose.yml
 +-- README.md
 ```
@@ -520,8 +520,8 @@ slab/
 The production database is PostgreSQL. SQLite is used for local development to avoid requiring a local Postgres instance.
 
 The schema uses two primary tables:
-- `users` — Normalized records for authentication (id, email, password_hash, role, is_active).
-- `slab_records` — Document store. Each row holds a `table_name` (e.g., `bookings`, `providers`, `notifications`) and a JSONB `data` column. Indexed on `table_name` and `record_id`.
+- `users` â€” Normalized records for authentication (id, email, password_hash, role, is_active).
+- `slab_records` â€” Document store. Each row holds a `table_name` (e.g., `bookings`, `providers`, `notifications`) and a JSONB `data` column. Indexed on `table_name` and `record_id`.
 
 Migrations are managed with **Alembic**.
 
@@ -571,7 +571,7 @@ All REST responses use the envelope format:
 - Node.js 18+
 - Python 3.9+
 - Git
-- PostgreSQL 13+ (optional — SQLite is used by default for local dev)
+- PostgreSQL 13+ (optional â€” SQLite is used by default for local dev)
 
 ### Backend
 
@@ -585,7 +585,7 @@ python -m venv .venv
 pip install -r requirements.txt
 
 cp .env.example .env
-# Edit .env — at minimum set DATABASE_URL and JWT_SECRET
+# Edit .env â€” at minimum set DATABASE_URL and JWT_SECRET
 
 alembic upgrade head            # PostgreSQL only; SQLite auto-initialises
 
@@ -612,7 +612,7 @@ Frontend: `http://localhost:5173/Slab`
 1. Open `http://localhost:5173/Slab`
 2. **Register** as a Customer ? browse ? create a booking ? pay (test card: `4242 4242 4242 4242`)
 3. In a second browser, **register** as a Provider ? accept the job alert
-4. Provider: update status to **En Route** — the customer map shows your position live
+4. Provider: update status to **En Route** â€” the customer map shows your position live
 5. Provider: enter the **PIN** the customer reads from their dashboard
 6. Provider: mark the job **complete**
 
@@ -651,7 +651,7 @@ PRESENTATION_MODE=true
 ### Frontend (`frontend/.env`)
 
 ```bash
-# Optional — defaults to /api/v1 via Vite proxy
+# Optional â€” defaults to /api/v1 via Vite proxy
 VITE_BACKEND_API_URL=http://localhost:8000/api/v1
 
 VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...
@@ -762,15 +762,15 @@ Manual test cases:
 
 ## Current Status
 
-SLAB is a working full-stack application with a live production deployment. The core booking loop — discovery, estimation, payment, provider dispatch, GPS tracking, PIN verification, and project reporting — is fully implemented and tested.
+SLAB is a working full-stack application with a live production deployment. The core booking loop â€” discovery, estimation, payment, provider dispatch, GPS tracking, PIN verification, and project reporting â€” is fully implemented and tested.
 
 ---
 
 ## Team
 
-**Sreejith PV** — Backend architecture, API design, database schema, authentication, pricing engine, provider matching
+**Sreejith PV** â€” Backend architecture, API design, database schema, authentication, pricing engine, provider matching
 
-**Randell Ronald** — Full-stack development, frontend UI/UX, real-time tracking, map integration, responsive design, deployment
+**Randell Ronald** â€” Full-stack development, frontend UI/UX, real-time tracking, map integration, responsive design, deployment
 
 ---
 
@@ -786,6 +786,7 @@ Contributions are welcome. Please open an issue before submitting a pull request
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
+
 
 
 
