@@ -1,4 +1,4 @@
-import "maplibre-gl/dist/maplibre-gl.css";
+﻿import "maplibre-gl/dist/maplibre-gl.css";
 import * as maplibregl from "maplibre-gl";
 import { AlertTriangle, Bell, CalendarX, CheckCircle2, Clock, FileCheck2, IndianRupee, MapPinned, Navigation, Phone, Radio, Upload, Wrench, XCircle } from "lucide-react";
 import { AnchorHTMLAttributes, FormEvent, ReactNode, useEffect, useRef, useState } from "react";
@@ -159,12 +159,12 @@ export function ProviderDashboardPage() {
       <section className="rounded-lg border border-slab-border bg-white p-5 shadow-soft">
         <p className="text-sm font-semibold text-slab-muted">Primary equipment and operator</p>
         <p className="mt-1 text-xl font-black text-slab-ink">{dashboard?.primary_equipment?.display_name || "Equipment setup required"}</p>
-        <p className="mt-1 text-sm text-slab-muted">{dashboard?.primary_equipment?.registration_number || "Equipment number pending"} · {dashboard?.primary_equipment?.status || "unavailable"}</p>
+        <p className="mt-1 text-sm text-slab-muted">{dashboard?.primary_equipment?.registration_number || "Equipment number pending"} Â· {dashboard?.primary_equipment?.status || "unavailable"}</p>
       </section>
 
       {error ? <ErrorState title="Provider dashboard error" message={error} /> : null}
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <Metric icon={<FileCheck2 />} label="Verification" value={dashboard?.verification?.status ?? "not submitted"} />
         <Metric icon={<Wrench />} label="Equipment" value={String(dashboard?.equipment_count ?? 0)} />
         <Metric icon={<Clock />} label="New requests" value={String(dashboard?.pending_requests.length ?? 0)} />
@@ -172,10 +172,10 @@ export function ProviderDashboardPage() {
       </div>
 
       {dashboard?.verification?.status !== "approved" ? (
-        <section className="rounded-lg border border-slab-border bg-white p-6 shadow-soft">
+        <section className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
           <h2 className="text-2xl font-black text-slab-ink">KYC and verification</h2>
           {dashboard?.verification?.rejection_reason ? <p className="mt-2 text-sm text-slab-error">{dashboard.verification.rejection_reason}</p> : null}
-          <form onSubmit={submitVerification} className="mt-5 grid gap-4 md:grid-cols-2">
+          <form onSubmit={submitVerification} className="mt-5 grid gap-4 md:grid-cols-1 md:grid-cols-2">
             <input className="min-h-11 rounded-md border border-slab-border px-3" name="full_name" placeholder="Legal full name" required />
             <input className="min-h-11 rounded-md border border-slab-border px-3" name="phone" placeholder="Phone" required />
             <input className="min-h-11 rounded-md border border-slab-border px-3" name="email" type="email" placeholder="Email" required />
@@ -202,7 +202,7 @@ export function ProviderDashboardPage() {
       ) : null}
 
       <section className="grid gap-6 xl:grid-cols-[1fr_0.9fr]">
-        <div className="rounded-lg border border-slab-border bg-white p-6 shadow-soft">
+        <div className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
           <h2 className="text-2xl font-black text-slab-ink">Instant requests</h2>
           <div className="mt-5 space-y-3">
             {dashboard?.provider?.is_online && dashboard?.instant_requests?.length ? (
@@ -221,7 +221,7 @@ export function ProviderDashboardPage() {
           </div>
         </div>
 
-        <div className="rounded-lg border border-slab-border bg-white p-6 shadow-soft">
+        <div className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
           <h2 className="text-2xl font-black text-slab-ink">Notifications</h2>
           <div className="mt-5 space-y-3">
             {dashboard?.notifications.length ? dashboard.notifications.map((item) => (
@@ -234,13 +234,13 @@ export function ProviderDashboardPage() {
         </div>
       </section>
 
-      <section className="rounded-lg border border-slab-border bg-white p-6 shadow-soft">
+      <section className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
         <h2 className="text-2xl font-black text-slab-ink">Scheduled work</h2>
-        <div className="mt-5 grid gap-3 md:grid-cols-2">
+        <div className="mt-5 grid gap-3 md:grid-cols-1 md:grid-cols-2">
           {dashboard?.scheduled_work?.length ? dashboard.scheduled_work.map((job) => (
             <article key={job.id} className="rounded-md border border-slab-border p-4">
               <p className="font-bold text-slab-ink">{job.customer?.full_name || "Customer"}</p>
-              <p className="mt-1 text-sm text-slab-muted">{job.items?.[0]?.equipment_type || "Equipment"} · {job.booking?.starts_at ? new Date(job.booking.starts_at).toLocaleString("en-IN", { weekday: "short", hour: "numeric", minute: "2-digit" }) : "Scheduled time"}</p>
+              <p className="mt-1 text-sm text-slab-muted">{job.items?.[0]?.equipment_type || "Equipment"} Â· {job.booking?.starts_at ? new Date(job.booking.starts_at).toLocaleString("en-IN", { weekday: "short", hour: "numeric", minute: "2-digit" }) : "Scheduled time"}</p>
               <p className="mt-1 text-sm text-slab-muted">Site: {job.booking?.site_location?.line1 || "Site location"}</p>
               <ActionRoute to={`/provider/jobs/${job.booking_id}`}>View work</ActionRoute>
             </article>
@@ -248,17 +248,17 @@ export function ProviderDashboardPage() {
         </div>
       </section>
 
-      <section className="rounded-lg border border-slab-border bg-white p-6 shadow-soft">
+      <section className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
         <h2 className="text-2xl font-black text-slab-ink">Active job</h2>
         {dashboard?.active_jobs.length ? (
           dashboard.active_jobs.map((job) => (
             <article key={job.id} className="mt-4 rounded-md border border-slab-border p-4">
               <p className="text-xs font-black uppercase tracking-[0.14em] text-slab-primaryStrong">Job accepted</p>
               <p className="mt-1 font-bold text-slab-ink">{job.customer?.full_name || job.customer?.email || "Customer"}</p>
-              <p className="mt-1 text-sm font-semibold text-slab-muted">Booking #{job.booking_id.slice(0, 8)} · {formatStatus(job.booking?.status || "assigned")}</p>
+              <p className="mt-1 text-sm font-semibold text-slab-muted">Booking #{job.booking_id.slice(0, 8)} Â· {formatStatus(job.booking?.status || "assigned")}</p>
               <p className="mt-1 text-sm text-slab-muted">{job.booking?.site_location?.line1 ?? "Site details available in job view"}</p>
               <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_320px]">
-                <div className="grid gap-3 sm:grid-cols-3">
+                <div className="grid gap-3 sm:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                   <SmallStat label="Equipment" value={job.items?.[0]?.equipment_type?.replace(/_/g, " ") || "Equipment"} />
                   <SmallStat label="Distance" value={`${job.distance_km ?? "-"} km`} />
                   <SmallStat label="ETA" value={`${job.eta_minutes ?? "-"} min`} />
@@ -284,10 +284,10 @@ export function ProviderDashboardPage() {
         )}
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-2">
-        <form onSubmit={submitEquipment} className="rounded-lg border border-slab-border bg-white p-6 shadow-soft">
+      <section className="grid gap-6 xl:grid-cols-1 md:grid-cols-2">
+        <form onSubmit={submitEquipment} className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
           <h2 className="text-2xl font-black text-slab-ink">Equipment management</h2>
-          <div className="mt-5 grid gap-3 md:grid-cols-2">
+          <div className="mt-5 grid gap-3 md:grid-cols-1 md:grid-cols-2">
             <select className="min-h-11 rounded-md border border-slab-border px-3" name="equipment_type_slug" required>
               <option value="excavator">Excavator</option>
               <option value="jcb">JCB / Backhoe</option>
@@ -320,7 +320,7 @@ export function ProviderDashboardPage() {
             const form = new FormData(event.currentTarget);
             void perform(() => providerService.blockAvailability({ starts_at: String(form.get("starts_at")), ends_at: String(form.get("ends_at")), reason: String(form.get("reason") ?? "") }));
           }}
-          className="rounded-lg border border-slab-border bg-white p-6 shadow-soft"
+          className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft"
         >
           <h2 className="text-2xl font-black text-slab-ink">Availability blocks</h2>
           <div className="mt-5 grid gap-3">
@@ -332,7 +332,7 @@ export function ProviderDashboardPage() {
         </form>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 md:grid-cols-1 md:grid-cols-2">
         <JobList title="Upcoming jobs" jobs={dashboard?.active_jobs ?? []} />
         <JobList title="Completed jobs" jobs={dashboard?.completed_jobs ?? []} />
       </section>
@@ -355,7 +355,7 @@ function JobAlerts({ requests, acceptedRequest, onAccept, onDecline }: { request
         </div>
         <span className="rounded-full border border-slab-border bg-yellow-50 px-3 py-1 text-xs font-black uppercase tracking-[0.14em] text-slab-ink">{requests.length} active</span>
       </div>
-      <div className="mt-5 grid gap-4 xl:grid-cols-2">
+      <div className="mt-5 grid gap-4 xl:grid-cols-1 md:grid-cols-2">
         {requests.map((request) => <ProviderRequestCard key={request.id} request={request} accepted={acceptedRequest === request.id} onAccept={() => onAccept(request)} onDecline={() => onDecline(request)} prominent />)}
       </div>
     </section>
@@ -379,15 +379,15 @@ function ProviderRequestCard({ request, accepted, onAccept, onDecline, prominent
         </div>
         <p className="text-right text-xl font-black text-slab-ink">{formatINR(request.estimated_amount ?? 0)}</p>
       </div>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+      <div className="mt-4 grid gap-3 sm:grid-cols-1 md:grid-cols-2">
         <SmallStat label="Location" value={site?.line1 || site?.city || "Site location pending"} />
         <SmallStat label="Distance" value={`${request.distance_km ?? "-"} km`} />
         <SmallStat label="ETA" value={`${request.eta_minutes ?? "-"} min`} />
         <SmallStat label="Job time" value={request.booking?.starts_at ? new Date(request.booking.starts_at).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }) : "Immediate"} />
       </div>
-      {emergency ? <p className="mt-3 rounded-md border border-slab-border bg-white px-3 py-2 text-sm font-bold text-slab-ink">SLAB Emergency Booking Fee: ₹0 · urgent dispatch</p> : null}
+      {emergency ? <p className="mt-3 rounded-md border border-slab-border bg-white px-3 py-2 text-sm font-bold text-slab-ink">SLAB Emergency Booking Fee: â‚¹0 Â· urgent dispatch</p> : null}
       <CompactProviderMap request={request} />
-      <div className="mt-4 grid gap-2 sm:grid-cols-2">
+      <div className="mt-4 grid gap-2 sm:grid-cols-1 md:grid-cols-2">
         <Button onClick={onAccept}><CheckCircle2 size={16} /> {accepted ? "JOB ACCEPTED" : "ACCEPT"}</Button>
         <Button variant="secondary" onClick={onDecline}><XCircle size={16} /> DECLINE</Button>
       </div>
@@ -517,7 +517,7 @@ const providerMapStyle = {
       type: "raster" as const,
       tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
       tileSize: 256,
-      attribution: "© OpenStreetMap contributors",
+      attribution: "Â© OpenStreetMap contributors",
     },
   },
   layers: [{ id: "osm", type: "raster" as const, source: "osm", minzoom: 0, maxzoom: 19 }],
@@ -543,7 +543,7 @@ function Metric({ icon, label, value }: { icon: ReactNode; label: string; value:
 
 function JobList({ title, jobs }: { title: string; jobs: JobAssignment[] }) {
   return (
-    <section className="rounded-lg border border-slab-border bg-white p-6 shadow-soft">
+    <section className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
       <h2 className="text-xl font-black text-slab-ink">{title}</h2>
       <div className="mt-4 space-y-2">
         {jobs.length ? jobs.map((job) => (
@@ -556,3 +556,4 @@ function JobList({ title, jobs }: { title: string; jobs: JobAssignment[] }) {
     </section>
   );
 }
+

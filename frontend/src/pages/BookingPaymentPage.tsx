@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+﻿import { useEffect, useState, type ReactNode } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { CheckCircle2, LoaderCircle, RotateCcw, XCircle } from "lucide-react";
 import { Button } from "../components/ui/Button";
@@ -33,5 +33,6 @@ export function BookingPaymentPage() {
 }
 
 function Status({ icon, title, body, action }: { icon: ReactNode; title: string; body: string; action: ReactNode }) {
-  return <section className="mx-auto max-w-xl rounded-lg border border-slab-border bg-white p-8 text-center shadow-soft"><div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slab-yellow text-slab-ink">{icon}</div><h1 className="mt-5 text-3xl font-black text-slab-ink">{title}</h1><p className="mt-3 text-slab-muted">{body}</p><div className="mt-6 flex justify-center">{action}</div></section>;
+  return <section className="mx-auto max-w-xl rounded-lg border border-slab-border bg-white p-4 md:p-8 text-center shadow-soft"><div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slab-yellow text-slab-ink">{icon}</div><h1 className="mt-5 text-3xl font-black text-slab-ink">{title}</h1><p className="mt-3 text-slab-muted">{body}</p><div className="mt-6 flex justify-center">{action}</div></section>;
 }
+

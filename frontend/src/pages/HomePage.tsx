@@ -1,4 +1,4 @@
-import "maplibre-gl/dist/maplibre-gl.css";
+﻿import "maplibre-gl/dist/maplibre-gl.css";
 import * as maplibregl from "maplibre-gl";
 import { ArrowRight, BadgeCheck, Building2, CalendarDays, Clock, IndianRupee, MessageSquare, Navigation, ShieldCheck, Star } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
@@ -111,7 +111,7 @@ export function HomePage() {
               <div className="slab-process__dashboard-row"><span>JCB Backhoe</span><b>Available</b></div>
               <div className="slab-process__dashboard-row"><span>Mobile Crane</span><b>Available</b></div>
               <div className="slab-process__dashboard-row"><span>Standard Tipper</span><b>Available</b></div>
-              <div className="slab-process__dashboard-stats"><span><b>12</b> providers found</span><span><b>₹8,500</b> estimate</span><span><b>18 min</b> nearest</span></div>
+              <div className="slab-process__dashboard-stats"><span><b>12</b> providers found</span><span><b>â‚¹8,500</b> estimate</span><span><b>18 min</b> nearest</span></div>
             </div>
             <div className="slab-process__route"><b>Request<br />received</b><i /><b>Matching<br />providers</b><i /><b>Provider<br />confirmed</b><i /><b>Equipment<br />dispatched</b></div>
           </article>
@@ -152,7 +152,7 @@ export function HomePage() {
                 ["Equipment", "JCB / Backhoe"],
                 ["Location", "Ernakulam"],
                 ["Date", "Tomorrow"],
-                ["Estimate", "₹8,500"]
+                ["Estimate", "â‚¹8,500"]
               ]}
               action="Book"
               Icon={CalendarDays}
@@ -216,7 +216,7 @@ export function HomePage() {
             ["2", "Tippers", "Site logistics"]
           ].map(([quantity, machine, label]) => (
             <div className="slab-bulk-booking__equipment" key={machine}>
-              <strong>{quantity} ×</strong>
+              <strong>{quantity} Ã—</strong>
               <div>
                 <b>{machine}</b>
                 <span>{label}</span>
@@ -245,8 +245,8 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="grid gap-8 lg:grid-cols-2">
-        <div className="rounded-lg border border-slab-border bg-white p-6 shadow-soft">
+      <section className="grid gap-4 md:gap-8 lg:grid-cols-1 md:grid-cols-2">
+        <div className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
           <p className="text-lg font-semibold text-slab-ink">"SLAB gives our team one place to find equipment, plan site requirements, and keep every job organized."</p>
           <p className="mt-4 text-sm font-bold text-slab-muted">Operations Team<br />Commercial Construction</p>
         </div>
@@ -260,9 +260,9 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="rounded-lg border border-slab-border bg-white p-8 shadow-soft">
+      <section className="rounded-lg border border-slab-border bg-white p-4 md:p-8 shadow-soft">
         <p className="text-sm font-black uppercase text-slab-primaryStrong">Ready for dispatch</p>
-        <h2 className="mt-2 text-4xl font-black text-slab-ink">Move the next job with SLAB.</h2>
+        <h2 className="mt-2 text-3xl md:text-4xl font-black text-slab-ink">Move the next job with SLAB.</h2>
         <p className="mt-3 max-w-2xl text-slab-muted">Book equipment, manage projects, and match verified providers through a marketplace designed for construction work.</p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link to="/booking"><Button>Book Equipment</Button></Link>
@@ -625,10 +625,11 @@ function ExperienceProductVisual({ label, title, rows, action, Icon }: { label: 
 
 function TrustCard({ icon, title, copy }: { icon: ReactNode; title: string; copy: string }) {
   return (
-    <article className="rounded-lg border border-slab-border bg-white p-6 shadow-soft">
+    <article className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
       <div className="text-slab-primaryStrong">{icon}</div>
       <h3 className="mt-4 text-xl font-black text-slab-ink">{title}</h3>
       <p className="mt-2 text-sm leading-6 text-slab-muted">{copy}</p>
     </article>
   );
 }
+

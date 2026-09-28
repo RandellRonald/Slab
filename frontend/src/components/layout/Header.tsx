@@ -1,4 +1,4 @@
-import { ArrowRight, LogOut, Search, X } from "lucide-react";
+﻿import { ArrowRight, LogOut, Search, X } from "lucide-react";
 import { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
@@ -80,14 +80,14 @@ export function Header() {
     <header className="slab-header sticky top-0 z-40 border-b border-slab-border bg-white/95 backdrop-blur-sm">
       <div className={`slab-header-inner mx-auto flex max-w-7xl items-center justify-between ${landingPage ? "h-[76px]" : "h-16"}`}>
         <Link aria-label="SLAB home" to="/" className="slab-brand shrink-0 text-xl font-black tracking-normal text-slab-ink">SLAB<span aria-hidden="true">.</span></Link>
-        <nav aria-label="Landing page" className="slab-desktop-nav min-w-0 flex-1 items-center justify-center">
+        <nav aria-label="Landing page" className="slab-desktop-nav mt-2 flex w-full min-w-0 flex-1 flex-wrap items-center justify-center gap-x-4 gap-y-2 overflow-x-auto pb-2 md:mt-0 md:w-auto md:justify-center md:overflow-visible md:pb-0">
           {landingLinks.map((item) => item.hash ? (
             <button key={item.label} className={navClass(isLandingHashActive(location.pathname, location.hash, item.hash))} onClick={() => scrollToSection(item.hash!)} type="button">{item.label}</button>
           ) : (
             <NavLink key={item.label} end={item.exact} className={({ isActive }) => navClass(isActive && (item.exact || location.pathname.startsWith(item.to!)))} to={item.to!}>{item.label}</NavLink>
           ))}
         </nav>
-        <nav aria-label="Account actions" className="slab-account-nav shrink-0 items-center whitespace-nowrap">
+        <nav aria-label="Account actions" className="slab-account-nav mt-2 flex shrink-0 items-center gap-3 whitespace-nowrap md:mt-0">
           <button aria-label="Search equipment" className="slab-header-icon rounded-md text-slab-muted transition hover:bg-slate-50 hover:text-slab-ink" onClick={openSearch} type="button"><Search size={19} /></button>
           {user ? <><NavLink className="slab-header-action font-medium text-slab-muted hover:text-slab-ink" to="/dashboard">Dashboard</NavLink><Button className="slab-header-cta" variant="secondary" onClick={() => void logout()}><LogOut size={16} />Logout</Button></> : <><NavLink className="slab-header-action font-medium text-slab-muted hover:text-slab-ink" to="/login">Sign In</NavLink><Link to="/equipment"><Button className="slab-header-cta">Get Started</Button></Link></>}
         </nav>
@@ -103,3 +103,4 @@ export function Header() {
     </header>
   );
 }
+

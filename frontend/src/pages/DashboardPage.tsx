@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 
 import { Button } from "../components/ui/Button";
 import { useAuth } from "../features/auth/AuthProvider";
@@ -11,8 +11,8 @@ export function DashboardPage() {
     <section>
       <h1 className="text-3xl font-black text-slab-ink">Dashboard</h1>
       <p className="mt-2 text-slab-muted">Your authenticated Phase 1 workspace is ready.</p>
-      <div className="mt-6 rounded-lg border border-slab-border bg-white p-6 shadow-soft">
-        <dl className="grid gap-4 sm:grid-cols-2">
+      <div className="mt-6 rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
+        <dl className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
           <div>
             <dt className="text-sm font-semibold text-slab-muted">Role</dt>
             <dd className="mt-1 font-bold capitalize text-slab-ink">{user?.role}</dd>
@@ -31,3 +31,4 @@ export function DashboardPage() {
     </section>
   );
 }
+

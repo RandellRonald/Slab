@@ -1,4 +1,4 @@
-import { FormEvent, PointerEvent, useEffect, useState } from "react";
+﻿import { FormEvent, PointerEvent, useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { CheckCircle2, MapPinned, MessageSquare, Phone } from "lucide-react";
 
@@ -71,7 +71,7 @@ export function ProviderJobPage() {
       {!job ? <EmptyState title="Job not found" message="Assigned jobs are loaded from the SLAB API." /> : null}
       {job ? (
         <>
-          <div className="rounded-lg border border-slab-border bg-white p-6 shadow-soft">
+          <div className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
             <p className="text-sm font-bold uppercase text-slab-primaryStrong">Assigned job</p>
             <h1 className="mt-2 text-3xl font-black text-slab-ink">Booking {job.booking_id.slice(0, 8)}</h1>
             <p className="mt-2 text-slab-muted">{job.booking?.site_location?.line1 ?? "Site address not provided"}</p>
@@ -82,7 +82,7 @@ export function ProviderJobPage() {
             </div>
           </div>
 
-          <section className="rounded-lg border border-slab-border bg-white p-6 shadow-soft">
+          <section className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
             <p className="text-sm font-bold uppercase text-slab-primaryStrong">Live job workflow</p>
             <h2 className="mt-2 text-2xl font-black text-slab-ink">{statusLabel(job.booking?.status)}</h2>
             {job.booking?.status === "assigned" ? <Button className="mt-5" onClick={() => void perform(() => providerService.markEnRoute(bookingId))}>Start navigation</Button> : null}
@@ -94,9 +94,9 @@ export function ProviderJobPage() {
           </section>
 
           <div className="grid gap-6 lg:grid-cols-[1fr_0.8fr]">
-            <section className="rounded-lg border border-slab-border bg-white p-6 shadow-soft">
+            <section className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
               <h2 className="text-xl font-black text-slab-ink">Job details</h2>
-              <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
+              <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-1 md:grid-cols-2">
                 <Detail label="Status" value={job.booking?.status ?? "assigned"} />
                 <Detail label="Start" value={job.booking?.starts_at ? new Date(job.booking.starts_at).toLocaleString() : "-"} />
                 <Detail label="End" value={job.booking?.ends_at ? new Date(job.booking.ends_at).toLocaleString() : "-"} />
@@ -116,7 +116,7 @@ export function ProviderJobPage() {
             </section>
 
             {isChat ? (
-              <form onSubmit={sendMessage} className="rounded-lg border border-slab-border bg-white p-6 shadow-soft">
+              <form onSubmit={sendMessage} className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
                 <h2 className="text-xl font-black text-slab-ink">Message customer</h2>
                 {sent ? <p className="mt-2 text-sm font-semibold text-green-700">Message sent to the customer notification center.</p> : null}
                 <textarea className="mt-4 min-h-36 w-full rounded-md border border-slab-border p-3" name="message" placeholder="Write a concise update for the customer" required />
@@ -155,7 +155,7 @@ function SwipeConfirm({ label, onConfirm }: { label: string; onConfirm: () => Pr
   const [progress, setProgress] = useState(0);
   function finish() { if (progress > 0.82) void onConfirm(); setStart(null); setProgress(0); }
   return <div className="mt-5 select-none rounded-full bg-slate-100 p-1" onPointerMove={(event: PointerEvent<HTMLDivElement>) => { if (start !== null) setProgress(Math.max(0, Math.min(1, (event.clientX - start) / Math.max(1, event.currentTarget.clientWidth - 52)))); }} onPointerUp={finish} onPointerCancel={() => { setStart(null); setProgress(0); }}>
-    <div className="flex h-12 items-center rounded-full bg-white pr-4 shadow-sm"><button type="button" className="h-10 w-10 shrink-0 rounded-full bg-slab-yellow font-black text-slab-ink touch-none" style={{ transform: `translateX(${progress * 100}%)` }} onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); setStart(event.clientX); }}>→</button><span className="flex-1 text-center text-sm font-bold text-slab-ink">{label} →</span></div>
+    <div className="flex h-12 items-center rounded-full bg-white pr-4 shadow-sm"><button type="button" className="h-10 w-10 shrink-0 rounded-full bg-slab-yellow font-black text-slab-ink touch-none" style={{ transform: `translateX(${progress * 100}%)` }} onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); setStart(event.clientX); }}>â†’</button><span className="flex-1 text-center text-sm font-bold text-slab-ink">{label} â†’</span></div>
   </div>;
 }
 
@@ -164,7 +164,7 @@ function CompletionSummary({ job }: { job: JobAssignment }) {
   const service = Number(snapshot.service_amount ?? job.estimated_amount ?? 0);
   const travel = Number(snapshot.travel_charge ?? snapshot.travel ?? 0);
   const fee = Number(snapshot.platform_fee ?? 0);
-  return <div className="mt-5 grid gap-2 rounded-md border border-slab-border bg-slate-50 p-4 text-sm"><p className="font-black text-slab-ink">Job completed</p><p>Customer: {job.customer?.full_name || "Customer"}</p><p>Booking #{job.booking_id.slice(0, 8)}</p><p>Equipment service: ₹{service.toLocaleString("en-IN")}</p><p>Travel: ₹{travel.toLocaleString("en-IN")}</p><p>SLAB platform fee: ₹{fee.toLocaleString("en-IN")}</p><p className="font-bold">Total recorded: ₹{(service + travel + fee).toLocaleString("en-IN")}</p><p className="text-slab-muted">Service amount is settled directly with the customer. SLAB fee is handled through booking payment.</p></div>;
+  return <div className="mt-5 grid gap-2 rounded-md border border-slab-border bg-slate-50 p-4 text-sm"><p className="font-black text-slab-ink">Job completed</p><p>Customer: {job.customer?.full_name || "Customer"}</p><p>Booking #{job.booking_id.slice(0, 8)}</p><p>Equipment service: â‚¹{service.toLocaleString("en-IN")}</p><p>Travel: â‚¹{travel.toLocaleString("en-IN")}</p><p>SLAB platform fee: â‚¹{fee.toLocaleString("en-IN")}</p><p className="font-bold">Total recorded: â‚¹{(service + travel + fee).toLocaleString("en-IN")}</p><p className="text-slab-muted">Service amount is settled directly with the customer. SLAB fee is handled through booking payment.</p></div>;
 }
 
 function elapsed(startedAt: string | null | undefined, now: number) {
@@ -193,3 +193,4 @@ function navigationUrl(job: JobAssignment) {
     ? `https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=;${latitude},${longitude}`
     : null;
 }
+

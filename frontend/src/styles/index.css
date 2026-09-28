@@ -1,4 +1,4 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -117,9 +117,9 @@ a[class*="border-slab-border"]:not(.slab-button):hover {
 
 .slab-header { border-top: 3px solid #d99b00; box-shadow: 0 4px 18px rgba(31, 27, 17, 0.05); }
 .slab-header-inner {
-  gap: clamp(0.08rem, 0.8vw, 1rem);
-  padding-left: clamp(0.18rem, 1.6vw, 2rem);
-  padding-right: clamp(0.18rem, 1.6vw, 2rem);
+  gap: clamp(0.8rem, 0.8vw, 1rem);
+  padding-left: clamp(1rem, 1.6vw, 2rem);
+  padding-right: clamp(1rem, 1.6vw, 2rem);
 }
 .slab-brand { letter-spacing: 0.03em; }
 .slab-brand span { color: #d99b00; }
@@ -127,48 +127,48 @@ a[class*="border-slab-border"]:not(.slab-button):hover {
   font-size: clamp(0.8rem, 4vw, 1.38rem);
 }
 .slab-nav-link {
-  font-size: clamp(0.31rem, 1.23vw, 0.875rem);
+  font-size: clamp(0.85rem, 1.23vw, 0.875rem);
   letter-spacing: 0.01em;
-  padding-left: clamp(0.03rem, 0.25vw, 0.12rem);
-  padding-right: clamp(0.03rem, 0.25vw, 0.12rem);
+  padding-left: clamp(1rem, 0.25vw, 0.12rem);
+  padding-right: clamp(1rem, 0.25vw, 0.12rem);
 }
 .slab-desktop-nav,
 .slab-desktop-nav > * { white-space: nowrap; }
 .slab-desktop-nav {
   display: flex;
-  gap: clamp(0.06rem, 0.85vw, 1.25rem);
+  gap: clamp(1rem, 0.85vw, 1.25rem);
 }
 .slab-desktop-nav > * { flex-shrink: 0; }
 .slab-account-nav {
   display: flex;
-  gap: clamp(0.04rem, 0.55vw, 0.5rem);
+  gap: clamp(0.3rem, 0.55vw, 0.5rem);
 }
 .slab-header-action {
-  font-size: clamp(0.31rem, 1.23vw, 0.925rem);
-  padding: clamp(0.06rem, 0.45vw, 0.5rem) clamp(0.08rem, 0.65vw, 0.75rem);
+  font-size: clamp(0.85rem, 1.23vw, 0.925rem);
+  padding: clamp(1rem, 0.45vw, 0.5rem) clamp(0.8rem, 0.65vw, 0.75rem);
 }
 .slab-header-icon {
   align-items: center;
   display: inline-flex;
   justify-content: center;
-  padding: clamp(0.04rem, 0.45vw, 0.5rem);
+  padding: clamp(0.3rem, 0.45vw, 0.5rem);
 }
 .slab-header-icon svg {
-  height: clamp(0.5rem, 2.1vw, 1.25rem);
-  width: clamp(0.5rem, 2.1vw, 1.25rem);
+  height: clamp(1rem, 2.1vw, 1.25rem);
+  width: clamp(1rem, 2.1vw, 1.25rem);
 }
 .slab-header .slab-header-cta {
-  font-size: clamp(0.31rem, 1.23vw, 0.925rem);
-  min-height: clamp(1.22rem, 4.15vw, 2.75rem);
-  padding: clamp(0.06rem, 0.45vw, 0.5rem) clamp(0.12rem, 0.9vw, 1rem);
+  font-size: clamp(0.85rem, 1.23vw, 0.925rem);
+  min-height: clamp(2.5rem, 4.15vw, 2.75rem);
+  padding: clamp(1rem, 0.45vw, 0.5rem) clamp(0.75rem, 0.9vw, 1rem);
 }
 .slab-header .slab-header-cta svg {
-  height: clamp(0.46rem, 1.8vw, 1.05rem);
-  width: clamp(0.46rem, 1.8vw, 1.05rem);
+  height: clamp(1rem, 1.8vw, 1.05rem);
+  width: clamp(1rem, 1.8vw, 1.05rem);
 }
 @media (max-width: 639px) {
   .slab-header-inner {
-    gap: clamp(0.03rem, 0.48vw, 0.24rem);
+    gap: clamp(1rem, 0.48vw, 0.24rem);
   }
   .slab-desktop-nav {
     gap: clamp(0.025rem, 0.45vw, 0.18rem);
@@ -509,3 +509,4 @@ a[class*="border-slab-border"]:not(.slab-button):hover {
   from { opacity: 0; transform: translateY(28px) scale(0.985); clip-path: inset(0 0 100% 0); }
   to { opacity: 1; transform: translateY(0) scale(1); clip-path: inset(0 0 0 0); }
 }
+

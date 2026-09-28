@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+﻿import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Calculator, Plus, Trash2 } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -151,7 +151,7 @@ export function BookingPage() {
           <div>
             <p className="text-sm font-black uppercase tracking-[0.14em] text-slab-primaryStrong">Emergency booking</p>
             <h2 className="mt-1 text-2xl font-black text-slab-ink">Need it urgently?</h2>
-            <p className="mt-1 text-slab-muted">Get the nearest available provider to your site. SLAB Emergency Booking Fee is ₹0.</p>
+            <p className="mt-1 text-slab-muted">Get the nearest available provider to your site. SLAB Emergency Booking Fee is â‚¹0.</p>
           </div>
           <Button
             type="button"
@@ -161,24 +161,24 @@ export function BookingPage() {
               setItems([{ equipment_type: "emergency_septic_service", quantity: 1, duration_hours: 2, operator_required: true }]);
             }}
           >
-            Book Emergency Service →
+            Book Emergency Service â†’
           </Button>
         </div>
-        {isEmergency ? <p className="mt-3 rounded-md border border-slab-border bg-yellow-50 px-3 py-2 text-sm font-semibold text-slab-ink">URGENT REQUEST · Provider nearby · ETA shown after matching</p> : null}
+        {isEmergency ? <p className="mt-3 rounded-md border border-slab-border bg-yellow-50 px-3 py-2 text-sm font-semibold text-slab-ink">URGENT REQUEST Â· Provider nearby Â· ETA shown after matching</p> : null}
       </section>
       {error ? <ErrorState title="Booking action failed" message={error} /> : null}
 
       <LocationPicker onConfirm={(location) => setSite({ line1: location.address, latitude: location.latitude, longitude: location.longitude, area: location.area ?? "", city: location.city ?? "", district: location.district ?? "", state: location.state ?? "", postal_code: location.postal_code ?? "" })} />
 
       <form onSubmit={submitBooking} className="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(300px,360px)]">
-        <div className="min-w-0 space-y-5 rounded-lg border border-slab-border bg-white p-6 shadow-soft">
+        <div className="min-w-0 space-y-5 rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
           <h2 className="text-2xl font-black text-slab-ink">Equipment requirements</h2>
           <div className="rounded-md border border-slab-border bg-slate-50 p-4">
             <div className="flex flex-col items-stretch gap-3 md:flex-row md:items-end">
               <label className="min-w-0 flex-1 text-sm font-semibold text-slab-ink">Project
                 <select name="project_id" className="mt-2 min-h-11 w-full rounded-md border border-slab-border bg-white px-3" value={selectedProjectId} onChange={(event) => setSelectedProjectId(event.target.value)}>
                   <option value="">Select an active project</option>
-                  {projects.filter((project) => project.status !== "completed").map((project) => <option key={project.id} value={project.id}>{project.project_name} · {project.address?.city || project.address?.line1}</option>)}
+                  {projects.filter((project) => project.status !== "completed").map((project) => <option key={project.id} value={project.id}>{project.project_name} Â· {project.address?.city || project.address?.line1}</option>)}
                 </select>
               </label>
               <Button type="button" variant="secondary" onClick={() => setShowProjectForm(true)}><Plus size={16} /> Create project</Button>
@@ -195,7 +195,7 @@ export function BookingPage() {
                 </div>
                 <Button type="button" variant="secondary" onClick={() => setShowProjectForm(false)}>Cancel</Button>
               </div>
-              <div ref={projectFormRef} className="mt-5 grid gap-4 md:grid-cols-2">
+              <div ref={projectFormRef} className="mt-5 grid gap-4 md:grid-cols-1 md:grid-cols-2">
                 <label className="text-sm font-semibold text-slab-ink md:col-span-2">Project name *<input name="project_name" required minLength={1} maxLength={180} className="mt-2 min-h-11 w-full rounded-md border border-slab-border px-3" placeholder="Commercial site package" /></label>
                 <label className="text-sm font-semibold text-slab-ink md:col-span-2">Site address *<input name="line1" required minLength={1} maxLength={240} defaultValue={site.line1 === "Unconfirmed site" ? "" : site.line1} className="mt-2 min-h-11 w-full rounded-md border border-slab-border px-3" placeholder="Full site address" /></label>
                 <label className="text-sm font-semibold text-slab-ink">Area / Locality<input name="area" defaultValue={site.area} className="mt-2 min-h-11 w-full rounded-md border border-slab-border px-3" /></label>
@@ -218,7 +218,7 @@ export function BookingPage() {
             </section>
           ) : null}
           {items.map((item, index) => (
-            <div key={index} className="grid min-w-0 gap-3 rounded-md border border-slab-border bg-white p-4 shadow-soft sm:grid-cols-2 lg:grid-cols-[minmax(170px,1fr)_96px_minmax(170px,190px)_minmax(150px,170px)_48px]">
+            <div key={index} className="grid min-w-0 gap-3 rounded-md border border-slab-border bg-white p-4 shadow-soft sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-[minmax(170px,1fr)_96px_minmax(170px,190px)_minmax(150px,170px)_48px]">
               <label className="text-sm font-semibold text-slab-ink">Equipment
                 <select className="mt-2 min-h-11 w-full rounded-md border border-slab-border bg-white px-3" value={item.equipment_type} onChange={(event) => updateItem(index, { equipment_type: event.target.value })}>
                   {equipmentOptions.map((option) => <option key={option} value={option}>{equipmentLabels[option]}</option>)}
@@ -235,9 +235,9 @@ export function BookingPage() {
                   </select>
                 </span>
               </label>
-              <label className="flex min-h-11 min-w-0 items-center gap-2 rounded-md border border-slab-border bg-slate-50 px-3 text-sm font-semibold text-slab-ink lg:mt-7">
-                <input type="checkbox" checked={item.operator_required} onChange={(event) => updateItem(index, { operator_required: event.target.checked })} />
-                <span className="truncate">Operator Required</span>
+              <label className="flex h-11 min-w-0 items-center gap-1.5 rounded-md border border-slab-border bg-slate-50 px-2 text-[13px] font-bold text-slab-ink lg:mt-7">
+                <input type="checkbox" className="h-3.5 w-3.5" checked={item.operator_required} onChange={(event) => updateItem(index, { operator_required: event.target.checked })} />
+                <span className="whitespace-nowrap">Operator Required</span>
               </label>
               <button type="button" title="Remove equipment" className="flex h-11 w-11 items-center justify-center rounded-md border border-slab-border bg-white shadow-[3px_3px_0_rgba(17,24,39,0.16)] transition hover:-translate-y-0.5 hover:border-slab-primaryStrong sm:justify-self-start lg:mt-7" onClick={() => setItems(items.filter((_, itemIndex) => itemIndex !== index))} aria-label="Remove equipment">
                 <Trash2 size={16} />
@@ -255,7 +255,7 @@ export function BookingPage() {
           </div>
         </div>
 
-        <aside className="h-fit min-w-0 rounded-lg border border-slab-border bg-white p-6 shadow-soft xl:sticky xl:top-24">
+        <aside className="h-fit min-w-0 rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft xl:sticky xl:top-24">
           <h2 className="text-2xl font-black text-slab-ink">Booking summary</h2>
           <p className="mt-2 text-sm text-slab-muted">{totalQuantity} equipment units, {items.length} line items</p>
           <Button type="button" className="mt-5 w-full" onClick={() => void calculate()}><Calculator size={16} /> Estimate cost</Button>
@@ -324,3 +324,4 @@ function cleanSiteAddress(site: typeof initialSite) {
     postal_code: cleaned.postal_code,
   };
 }
+

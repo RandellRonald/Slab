@@ -1,4 +1,4 @@
-import "maplibre-gl/dist/maplibre-gl.css";
+﻿import "maplibre-gl/dist/maplibre-gl.css";
 import * as maplibregl from "maplibre-gl";
 import { MapPin, Navigation, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -37,7 +37,7 @@ const OSM_STYLE = {
       type: "raster" as const,
       tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
       tileSize: 256,
-      attribution: "© OpenStreetMap contributors",
+      attribution: "Â© OpenStreetMap contributors",
     },
   },
   layers: [{ id: "osm", type: "raster" as const, source: "osm", minzoom: 0, maxzoom: 19 }],
@@ -228,7 +228,7 @@ export function LocationPicker({ onConfirm }: { onConfirm: (location: PickedLoca
         ) : null}
       </div>
 
-      <div className="mt-3 grid gap-3 sm:grid-cols-2">
+      <div className="mt-3 grid gap-3 sm:grid-cols-1 md:grid-cols-2">
         <input className="min-h-11 w-full rounded-md border border-slab-border px-3 sm:col-span-2" value={address} onChange={(event) => setAddress(event.target.value)} placeholder="Address" />
         <input className="min-h-11 rounded-md border border-slab-border px-3" value={fields.area} onChange={(event) => updateField("area", event.target.value)} placeholder="Area / Locality" />
         <input className="min-h-11 rounded-md border border-slab-border px-3" value={fields.city} onChange={(event) => updateField("city", event.target.value)} placeholder="City" />
@@ -269,3 +269,4 @@ function normalizePin(value: string) {
   const digits = value.replace(/\D/g, "").slice(0, 6);
   return digits.length === 6 ? digits : digits;
 }
+

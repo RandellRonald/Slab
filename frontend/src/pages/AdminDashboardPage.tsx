@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import { apiClient, request } from "../api/client";
 import { ErrorState } from "../components/ui/ErrorState";
@@ -55,7 +55,7 @@ export function AdminDashboardPage() {
         <p className="mt-2 text-slab-muted">Live operational view of customers, providers, bookings, payments and support work.</p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <Stat label="Customers" value={data.stats.customers} />
         <Stat label="Providers" value={data.stats.providers} />
         <Stat label="Equipment" value={data.stats.equipment} />
@@ -63,10 +63,10 @@ export function AdminDashboardPage() {
         <Stat label="Projects" value={data.stats.projects} />
         <Stat label="Payments" value={data.stats.payments} />
         <Stat label="Open disputes" value={data.stats.open_disputes} />
-        <Stat label="Platform revenue" value={`₹${Number(data.stats.platform_revenue_inr || 0).toLocaleString("en-IN")}`} />
+        <Stat label="Platform revenue" value={`â‚¹${Number(data.stats.platform_revenue_inr || 0).toLocaleString("en-IN")}`} />
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-2">
+      <div className="grid gap-6 xl:grid-cols-1 md:grid-cols-2">
         <DataPanel title="Customers" rows={data.customers} columns={["full_name", "email", "role"]} />
         <DataPanel title="Providers" rows={data.providers} columns={["company_name", "verification_status", "equipment_count"]} />
         <DataPanel title="Equipment" rows={data.equipment} columns={["display_name", "status", "daily_rate"]} />
@@ -118,8 +118,9 @@ function labelize(value: string) {
 }
 
 function formatValue(value: unknown) {
-  if (value === null || value === undefined || value === "") return "—";
+  if (value === null || value === undefined || value === "") return "â€”";
   if (typeof value === "number") return value.toLocaleString("en-IN");
   if (typeof value === "object") return JSON.stringify(value);
   return String(value);
 }
+

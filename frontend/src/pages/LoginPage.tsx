@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+﻿import { FormEvent, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button } from "../components/ui/Button";
@@ -38,7 +38,7 @@ export function LoginPage({ adminOnly = false, providerOnly = false }: { adminOn
     <section className="mx-auto max-w-md">
       <h1 className="text-3xl font-black text-slab-ink">{adminOnly ? "Admin sign in" : providerOnly ? "Provider sign in" : "Customer sign in"}</h1>
       <p className="mt-2 text-slab-muted">{adminOnly ? "Authorized SLAB administrators only." : providerOnly ? "Access your provider workspace and job requests." : "Book equipment and manage your construction projects."}</p>
-      <form onSubmit={onSubmit} className="mt-6 space-y-4 rounded-lg border border-slab-border bg-white p-6 shadow-soft">
+      <form onSubmit={onSubmit} className="mt-6 space-y-4 rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
         {submitError || error ? <ErrorState title="Sign in failed" message={submitError ?? error ?? "Sign in failed."} /> : null}
         {socialNotice ? <p className="rounded-md border border-slab-border bg-slate-50 px-3 py-2 text-sm text-slab-muted">{socialNotice}</p> : null}
         <label className="block text-sm font-semibold text-slab-ink">
@@ -50,7 +50,7 @@ export function LoginPage({ adminOnly = false, providerOnly = false }: { adminOn
           <input className="mt-2 w-full rounded-md border border-slab-border px-3 py-2" value={password} onChange={(event) => setPassword(event.target.value)} type="password" autoComplete="current-password" minLength={8} />
         </label>
         <Button className="w-full" disabled={submitting}>{submitting ? "Signing in" : "Sign in"}</Button>
-        {!adminOnly ? <div className="grid grid-cols-2 gap-3 border-t border-slab-border pt-4">
+        {!adminOnly ? <div className="grid grid-cols-1 md:grid-cols-2 gap-3 border-t border-slab-border pt-4">
           <Button type="button" variant="secondary" onClick={() => void onProviderSignIn("Google")} disabled={submitting}>Continue with Google</Button>
           <Button type="button" variant="secondary" onClick={() => void onProviderSignIn("Apple")} disabled={submitting}>Continue with Apple</Button>
         </div> : null}
@@ -64,3 +64,4 @@ export function LoginPage({ adminOnly = false, providerOnly = false }: { adminOn
     setSocialNotice(`${provider} Sign-In is not configured for this environment.`);
   }
 }
+

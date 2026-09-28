@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+﻿import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Button } from "../components/ui/Button";
@@ -34,7 +34,7 @@ export function RegisterPage({ provider = false }: { provider?: boolean }) {
     <section className="mx-auto max-w-xl">
       <h1 className="text-3xl font-black text-slab-ink">{provider ? "Provider registration" : "Customer registration"}</h1>
       <p className="mt-2 text-slab-muted">{provider ? "Start your provider onboarding and verification with SLAB." : "Create a customer account to book and manage equipment."}</p>
-      <form onSubmit={onSubmit} className="mt-6 space-y-4 rounded-lg border border-slab-border bg-white p-6 shadow-soft">
+      <form onSubmit={onSubmit} className="mt-6 space-y-4 rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
         {error ? <ErrorState title="Registration failed" message={error} /> : null}
         <label className="block text-sm font-semibold text-slab-ink">
           Full name
@@ -65,3 +65,4 @@ export function RegisterPage({ provider = false }: { provider?: boolean }) {
     </section>
   );
 }
+

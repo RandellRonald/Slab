@@ -1,4 +1,4 @@
-import "maplibre-gl/dist/maplibre-gl.css";
+﻿import "maplibre-gl/dist/maplibre-gl.css";
 import * as maplibregl from "maplibre-gl";
 import { Clock, LoaderCircle, MapPin, MessageSquare, Phone, Route, Star } from "lucide-react";
 import type { ReactNode } from "react";
@@ -240,13 +240,13 @@ export function BookingTrackingPage() {
                 <p className="mt-1 flex items-center gap-1 text-sm font-semibold text-slab-ink"><Star size={14} className="fill-slab-yellow text-slab-primaryStrong" /> {Number(provider?.rating_average ?? 0).toFixed(1)}</p>
               </div>
             </div>
-            <div className="mt-4 grid grid-cols-2 gap-2">
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2">
               <Button type="button" variant="secondary"><Phone size={16} /> Call</Button>
               <Button type="button" variant="secondary"><MessageSquare size={16} /> Chat</Button>
             </div>
           </section>
 
-          <section className="grid grid-cols-2 gap-3">
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <Metric icon={<Clock />} label="ETA" value={routeInfo ? `${routeInfo.duration_minutes} min` : "Calculating"} />
             <Metric icon={<MapPin />} label="Distance" value={routeInfo ? `${routeInfo.distance_km} km` : "Calculating"} />
           </section>
@@ -266,7 +266,7 @@ export function BookingTrackingPage() {
           <section className="rounded-lg border border-slab-border bg-white p-5 shadow-soft">
             <h2 className="font-black text-slab-ink">Tracking signal</h2>
             <p className="mt-2 text-sm text-slab-muted">Last update: {lastUpdated}</p>
-            <p className="mt-1 text-sm text-slab-muted">Heading: {providerLocation?.heading ? `${Math.round(providerLocation.heading)}°` : "Awaiting provider GPS"}</p>
+            <p className="mt-1 text-sm text-slab-muted">Heading: {providerLocation?.heading ? `${Math.round(providerLocation.heading)}Â°` : "Awaiting provider GPS"}</p>
             {socketState !== "connected" ? <p className="mt-3 flex items-center gap-2 text-sm font-semibold text-slab-muted"><LoaderCircle className="animate-spin" size={15} /> Reconnecting and refetching latest state</p> : null}
           </section>
         </aside>
@@ -299,3 +299,4 @@ function Metric({ icon, label, value }: { icon: ReactNode; label: string; value:
     </article>
   );
 }
+

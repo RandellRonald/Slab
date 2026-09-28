@@ -1,4 +1,4 @@
-import { BadgeCheck, ChevronLeft, Clock3, MapPin, Star } from "lucide-react";
+﻿import { BadgeCheck, ChevronLeft, Clock3, MapPin, Star } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 
@@ -55,7 +55,7 @@ export function MarketplaceEquipmentPage() {
       <header className="flex flex-col gap-4 border-b border-slab-border pb-7 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-sm font-bold uppercase text-slab-primaryStrong">SLAB marketplace</p>
-          <h1 className="mt-2 text-3xl font-black text-slab-ink sm:text-4xl">{details.title}</h1>
+          <h1 className="mt-2 text-3xl font-black text-slab-ink sm:text-3xl md:text-4xl">{details.title}</h1>
           <p className="mt-3 max-w-2xl text-slab-muted">{details.detail}</p>
         </div>
         {!loading ? <p className="text-sm font-semibold text-slab-muted">{providerCount} verified provider{providerCount === 1 ? "" : "s"} available</p> : null}
@@ -65,9 +65,9 @@ export function MarketplaceEquipmentPage() {
       {error ? <ErrorState title="Marketplace unavailable" message={error} /> : null}
       {!loading && !error && visibleEquipment.length === 0 ? <ErrorState title="No matching equipment" message="Try another equipment type or browse the full marketplace." /> : null}
 
-      {!loading && !error ? <div className="grid gap-5 md:grid-cols-2">
+      {!loading && !error ? <div className="grid gap-5 md:grid-cols-1 md:grid-cols-2">
         {visibleEquipment.map((item) => (
-          <article className="rounded-xl border border-slab-border bg-white p-6 shadow-soft" key={item.slug}>
+          <article className="rounded-xl border border-slab-border bg-white p-4 sm:p-6 shadow-soft" key={item.slug}>
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs font-bold uppercase text-slab-primaryStrong">{item.category}</p>
@@ -84,7 +84,7 @@ export function MarketplaceEquipmentPage() {
               {item.providers.length ? item.providers.map((provider, index) => <div className="flex items-center justify-between gap-3" key={`${provider.id}-${index}`}>
                 <div>
                   <p className="font-bold text-slab-ink">{provider.company_name || provider.name}</p>
-                  <p className="mt-1 flex items-center gap-1 text-sm text-slab-muted"><MapPin size={14} /> Verified provider {provider.is_online ? "· Online" : "· Available"}</p>
+                  <p className="mt-1 flex items-center gap-1 text-sm text-slab-muted"><MapPin size={14} /> Verified provider {provider.is_online ? "Â· Online" : "Â· Available"}</p>
                 </div>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-slab-ink"><Star className="fill-slab-primary text-slab-primary" size={15} /> {Number(provider.rating || 0).toFixed(1)}</span>
               </div>) : <p className="text-sm text-slab-muted">Availability is being refreshed. You can still request this equipment.</p>}
@@ -96,3 +96,4 @@ export function MarketplaceEquipmentPage() {
     </section>
   );
 }
+
