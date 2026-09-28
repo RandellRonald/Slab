@@ -44,3 +44,5 @@ backend/.venv/
 
 PRODUCTION_TEST_REPORT.md
 tests/
+docker-compose.yml
+.env.example
