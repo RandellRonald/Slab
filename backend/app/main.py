@@ -8,7 +8,7 @@ from app.core.config import get_settings
 from app.core.exceptions import register_exception_handlers
 from app.core.logging import configure_logging
 from app.middleware.request_context import RequestContextMiddleware
-from app.database.local import init_local_database
+from app.database.local import init_local_database, seed_auth_users
 from app.database.local_client import initialize_local_database
 
 
@@ -28,6 +28,7 @@ def create_app() -> FastAPI:
     logger.info("database backend active", extra={"database_driver": database_url.drivername, "database_host": database_url.host})
     init_local_database()
     initialize_local_database()
+    seed_auth_users()
 
     app.add_middleware(RequestContextMiddleware)
     app.add_middleware(

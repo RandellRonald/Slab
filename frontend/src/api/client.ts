@@ -17,6 +17,7 @@ export class ApiClientError extends Error {
 
 export const apiClient = axios.create({
   baseURL: env.apiUrl,
+  timeout: 10000,
   headers: {
     "Content-Type": "application/json"
   }

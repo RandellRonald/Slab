@@ -17,7 +17,6 @@ def _field(obj: Any, name: str, default: Any = None) -> Any:
 class AuthService:
     def __init__(self, *_, **__) -> None:
         self.settings = get_settings()
-        seed_auth_users()
 
     def register(self, payload: RegisterRequest) -> dict[str, Any]:
         if payload.role == "admin": raise AuthorizationError("Admin accounts are created by the backend.")
@@ -28,9 +27,31 @@ class AuthService:
             return self._session_payload(user)
 
     def login(self, payload: LoginRequest) -> dict[str, Any]:
-        with SessionLocal() as session:
+        with SessionLocal.begin() as session:
             user = get_user_by_email(session, payload.email)
-            if not user or not user.is_active or not pwd_context.verify(payload.password, user.password_hash): raise AuthenticationError("Invalid email or password.")
+            if not user or not pwd_context.verify(payload.password, user.password_hash):
+                if self.settings.PRESENTATION_MODE and self.settings.ENVIRONMENT != "production":
+                    if not payload.email or "@" not in payload.email or not payload.password:
+                        raise AuthenticationError("Invalid email or password.")
+                    if not user:
+                        local_part = payload.email.split("@")[0]
+                        full_name = " ".join([p.capitalize() for p in local_part.replace("_", ".").replace("-", ".").split(".")])
+                        user = User(
+                            id=str(__import__('uuid').uuid4()),
+                            email=payload.email.lower(),
+                            password_hash=pwd_context.hash(payload.password),
+                            full_name=full_name,
+                            phone=None,
+                            role=payload.expected_role or "customer"
+                        )
+                        session.add(user)
+                        session.flush()
+                else:
+                    raise AuthenticationError("Invalid email or password.")
+            
+            if not user.is_active:
+                raise AuthenticationError("Invalid email or password.")
+            
             if payload.expected_role and user.role != payload.expected_role:
                 raise AuthorizationError("Use the sign-in page for your SLAB account type.")
             return self._session_payload(user)
