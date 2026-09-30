@@ -63,7 +63,7 @@ export function AdminDashboardPage() {
         <Stat label="Projects" value={data.stats.projects} />
         <Stat label="Payments" value={data.stats.payments} />
         <Stat label="Open disputes" value={data.stats.open_disputes} />
-        <Stat label="Platform revenue" value={`â‚¹${Number(data.stats.platform_revenue_inr || 0).toLocaleString("en-IN")}`} />
+        <Stat label="Platform revenue" value={`₹${Number(data.stats.platform_revenue_inr || 0).toLocaleString("en-IN")}`} />
       </div>
 
       <div className="grid gap-6 xl:grid-cols-1 md:grid-cols-2">
@@ -118,7 +118,7 @@ function labelize(value: string) {
 }
 
 function formatValue(value: unknown) {
-  if (value === null || value === undefined || value === "") return "â€”";
+  if (value === null || value === undefined || value === "") return "—";
   if (typeof value === "number") return value.toLocaleString("en-IN");
   if (typeof value === "object") return JSON.stringify(value);
   return String(value);

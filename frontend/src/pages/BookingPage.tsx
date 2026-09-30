@@ -151,7 +151,7 @@ export function BookingPage() {
           <div>
             <p className="text-sm font-black uppercase tracking-[0.14em] text-slab-primaryStrong">Emergency booking</p>
             <h2 className="mt-1 text-2xl font-black text-slab-ink">Need it urgently?</h2>
-            <p className="mt-1 text-slab-muted">Get the nearest available provider to your site. SLAB Emergency Booking Fee is â‚¹0.</p>
+            <p className="mt-1 text-slab-muted">Get the nearest available provider to your site. SLAB Emergency Booking Fee is ₹0.</p>
           </div>
           <Button
             type="button"
@@ -161,10 +161,10 @@ export function BookingPage() {
               setItems([{ equipment_type: "emergency_septic_service", quantity: 1, duration_hours: 2, operator_required: true }]);
             }}
           >
-            Book Emergency Service â†’
+            Book Emergency Service →
           </Button>
         </div>
-        {isEmergency ? <p className="mt-3 rounded-md border border-slab-border bg-yellow-50 px-3 py-2 text-sm font-semibold text-slab-ink">URGENT REQUEST Â· Provider nearby Â· ETA shown after matching</p> : null}
+        {isEmergency ? <p className="mt-3 rounded-md border border-slab-border bg-yellow-50 px-3 py-2 text-sm font-semibold text-slab-ink">URGENT REQUEST · Provider nearby · ETA shown after matching</p> : null}
       </section>
       {error ? <ErrorState title="Booking action failed" message={error} /> : null}
 
@@ -178,7 +178,7 @@ export function BookingPage() {
               <label className="min-w-0 flex-1 text-sm font-semibold text-slab-ink">Project
                 <select name="project_id" className="mt-2 min-h-11 w-full rounded-md border border-slab-border bg-white px-3" value={selectedProjectId} onChange={(event) => setSelectedProjectId(event.target.value)}>
                   <option value="">Select an active project</option>
-                  {projects.filter((project) => project.status !== "completed").map((project) => <option key={project.id} value={project.id}>{project.project_name} Â· {project.address?.city || project.address?.line1}</option>)}
+                  {projects.filter((project) => project.status !== "completed").map((project) => <option key={project.id} value={project.id}>{project.project_name} · {project.address?.city || project.address?.line1}</option>)}
                 </select>
               </label>
               <Button type="button" variant="secondary" onClick={() => setShowProjectForm(true)}><Plus size={16} /> Create project</Button>

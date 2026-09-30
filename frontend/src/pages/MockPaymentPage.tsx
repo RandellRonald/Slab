@@ -74,12 +74,12 @@ export function MockPaymentPage() {
         <div>
           <p className="text-sm font-bold uppercase text-slab-primaryStrong">Emergency booking</p>
           <h1 className="mt-2 text-3xl font-black text-slab-ink">No SLAB booking fee</h1>
-          <p className="mt-2 text-slab-muted">SLAB Emergency Booking Fee is â‚¹0. Service and travel charges remain separate with the provider.</p>
+          <p className="mt-2 text-slab-muted">SLAB Emergency Booking Fee is ₹0. Service and travel charges remain separate with the provider.</p>
         </div>
         {error ? <ErrorState title="Emergency confirmation failed" message={error} /> : null}
         <section className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
           <p className="font-bold text-slab-ink">Booking {bookingId.slice(0, 8)}</p>
-          <p className="mt-2 text-sm text-slab-muted">{String(booking.status || "confirmed").replace(/_/g, " ")} Â· SLAB Emergency Booking Fee â‚¹0</p>
+          <p className="mt-2 text-sm text-slab-muted">{String(booking.status || "confirmed").replace(/_/g, " ")} · SLAB Emergency Booking Fee ₹0</p>
           <Button className="mt-6 w-full" type="button" onClick={() => void pay()} disabled={busy}>
             {busy ? <><LoaderCircle className="animate-spin" size={16} /> Confirming emergency request...</> : "Confirm emergency request"}
           </Button>
@@ -101,7 +101,7 @@ export function MockPaymentPage() {
           <CreditCard className="text-slab-primaryStrong" />
           <div>
             <p className="font-bold text-slab-ink">Booking {bookingId.slice(0, 8)}</p>
-            <p className="text-sm text-slab-muted">{String(booking?.status || "payment_pending").replace(/_/g, " ")} Â· Platform fee â‚¹{fee.toLocaleString("en-IN")}</p>
+            <p className="text-sm text-slab-muted">{String(booking?.status || "payment_pending").replace(/_/g, " ")} · Platform fee ₹{fee.toLocaleString("en-IN")}</p>
           </div>
         </div>
         <div className="mt-5 space-y-3">
@@ -119,7 +119,7 @@ export function MockPaymentPage() {
           })}
         </div>
         <Button className="mt-6 w-full" type="button" onClick={() => void pay()} disabled={busy || !booking}>
-          {busy ? <><LoaderCircle className="animate-spin" size={16} /> Processing payment...</> : `Pay â‚¹${fee.toLocaleString("en-IN")}`}
+          {busy ? <><LoaderCircle className="animate-spin" size={16} /> Processing payment...</> : `Pay ₹${fee.toLocaleString("en-IN")}`}
         </Button>
       </section>
     </section>
@@ -150,7 +150,7 @@ function BookingConfirmation({ bookingId, booking, experience, paid }: { booking
               <span className="flex h-12 w-12 items-center justify-center rounded-full bg-slab-yellow text-slab-ink"><CheckCircle2 size={28} /></span>
               <div>
                 <p className="text-sm font-bold uppercase text-slab-primaryStrong">Booking confirmed</p>
-                <h1 className="text-3xl font-black text-slab-ink">Booking Confirmed âœ“</h1>
+                <h1 className="text-3xl font-black text-slab-ink">Booking Confirmed ✓</h1>
               </div>
             </div>
             <p className="mt-4 text-slab-muted">Share this PIN with your provider when they arrive.</p>
@@ -169,7 +169,7 @@ function BookingConfirmation({ bookingId, booking, experience, paid }: { booking
           <Detail label="Estimated Arrival" value={eta} />
           <Detail label="Distance" value={distance} />
           <Detail label="Provider" value={providerStatus} />
-          <Detail label="Amount paid to SLAB" value={`â‚¹${((paid.amount_cents || 0) / 100).toLocaleString("en-IN")}`} />
+          <Detail label="Amount paid to SLAB" value={`₹${((paid.amount_cents || 0) / 100).toLocaleString("en-IN")}`} />
         </div>
 
         <div className="mt-6 border-t border-slab-border pt-5">

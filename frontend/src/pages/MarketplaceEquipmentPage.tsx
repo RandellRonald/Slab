@@ -84,7 +84,7 @@ export function MarketplaceEquipmentPage() {
               {item.providers.length ? item.providers.map((provider, index) => <div className="flex items-center justify-between gap-3" key={`${provider.id}-${index}`}>
                 <div>
                   <p className="font-bold text-slab-ink">{provider.company_name || provider.name}</p>
-                  <p className="mt-1 flex items-center gap-1 text-sm text-slab-muted"><MapPin size={14} /> Verified provider {provider.is_online ? "Â· Online" : "Â· Available"}</p>
+                  <p className="mt-1 flex items-center gap-1 text-sm text-slab-muted"><MapPin size={14} /> Verified provider {provider.is_online ? "· Online" : "· Available"}</p>
                 </div>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-slab-ink"><Star className="fill-slab-primary text-slab-primary" size={15} /> {Number(provider.rating || 0).toFixed(1)}</span>
               </div>) : <p className="text-sm text-slab-muted">Availability is being refreshed. You can still request this equipment.</p>}

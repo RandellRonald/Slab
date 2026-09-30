@@ -1,4 +1,4 @@
-﻿# SLAB
+# SLAB
 
 **Construction equipment booking and site coordination platform for equipment providers and contractors.**
 
@@ -623,29 +623,25 @@ Frontend: `http://localhost:5173/Slab`
 ### Backend (`backend/.env`)
 
 ```bash
-ENVIRONMENT=development
+ENVIRONMENT=production
 LOG_LEVEL=INFO
 
-DATABASE_URL=sqlite:///./slab_development.db
-# PostgreSQL: postgresql+psycopg://user:password@localhost:5432/slab
+DATABASE_URL=postgresql+psycopg://<username>:<password>@<host>:<port>/<dbname>
 
-JWT_SECRET=local-development-secret-change-in-production
+JWT_SECRET=<your_secure_jwt_secret_key>
 JWT_ALGORITHM=HS256
 
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_PUBLISHABLE_KEY=pk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-PAYMENT_MODE=mock
+STRIPE_SECRET_KEY=<your_stripe_secret_key>
+STRIPE_PUBLISHABLE_KEY=<your_stripe_publishable_key>
+STRIPE_WEBHOOK_SECRET=<your_stripe_webhook_secret>
 
-FRONTEND_BASE_URL=http://localhost:5173
-BACKEND_BASE_URL=http://localhost:8000
-CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+FRONTEND_BASE_URL=https://<your_frontend_domain>
+BACKEND_BASE_URL=https://<your_backend_domain>
+CORS_ORIGINS=https://<your_frontend_domain>
 
 NOMINATIM_BASE_URL=https://nominatim.openstreetmap.org
 OSRM_BASE_URL=https://router.project-osrm.org
-MAPS_USER_AGENT=SLAB/0.2 contact@example.com
-
-PRESENTATION_MODE=true
+MAPS_USER_AGENT=<your_app_name> <your_contact_email>
 ```
 
 ### Frontend (`frontend/.env`)

@@ -1,4 +1,4 @@
-﻿import { ArrowRight, Mail, MessageSquare, Phone, ShieldCheck } from "lucide-react";
+import { ArrowRight, Mail, MessageSquare, Phone, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { Button } from "../components/ui/Button";
@@ -17,7 +17,7 @@ export function SupportPage() {
       <div className="grid gap-6 lg:grid-cols-[1fr_360px] lg:items-end">
         <div>
           <p className="text-sm font-black uppercase tracking-[0.18em] text-slab-primaryStrong">Contact & Support</p>
-          <h1 className="mt-3 max-w-3xl text-4xl md:text-5xl font-black leading-tight text-slab-ink max-sm:text-3xl md:text-4xl">Weâ€™re Here to Help.</h1>
+          <h1 className="mt-3 max-w-3xl text-4xl md:text-5xl font-black leading-tight text-slab-ink max-sm:text-3xl md:text-4xl">We’re Here to Help.</h1>
           <p className="mt-4 max-w-2xl text-lg leading-8 text-slab-muted">Need help with booking, equipment, payments, tracking, or your project? Contact the SLAB support team.</p>
         </div>
         <div className="rounded-lg border-2 border-slab-ink bg-white p-5 shadow-[7px_7px_0_rgba(17,24,39,0.16)]">
@@ -41,15 +41,15 @@ export function SupportPage() {
         <article className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
           <Phone className="text-slab-primaryStrong" />
           <h2 className="mt-4 text-xl font-black text-slab-ink">Call Support</h2>
-          <p className="mt-2 text-sm text-slab-muted">{hasPhone ? supportContacts.phone : "Support phone to be configured."}</p>
-          <Button className="mt-5 w-full" disabled={!hasPhone} onClick={() => { if (hasPhone) window.location.href = `tel:${supportContacts.phone}`; }}>Call Support</Button>
+          <p className="mt-2 text-sm text-slab-muted">{hasPhone ? supportContacts.phone : "Support details are available through the SLAB support channel."}</p>
+          <Button className="mt-5 w-full" onClick={() => { if (hasPhone) window.location.href = `tel:${supportContacts.phone}`; else openChat(); }}>Call Support</Button>
         </article>
 
         <article className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">
           <Mail className="text-slab-primaryStrong" />
           <h2 className="mt-4 text-xl font-black text-slab-ink">Email Support</h2>
-          <p className="mt-2 text-sm text-slab-muted">{hasEmail ? supportContacts.email : "Support email to be configured."}</p>
-          <Button className="mt-5 w-full" variant="secondary" disabled={!hasEmail} onClick={() => { if (hasEmail) window.location.href = `mailto:${supportContacts.email}`; }}>Email Support</Button>
+          <p className="mt-2 text-sm text-slab-muted">{hasEmail ? supportContacts.email : "Support details are available through the SLAB support channel."}</p>
+          <Button className="mt-5 w-full" variant="secondary" onClick={() => { if (hasEmail) window.location.href = `mailto:${supportContacts.email}`; else openChat(); }}>Email Support</Button>
         </article>
 
         <article className="rounded-lg border border-slab-border bg-white p-4 sm:p-6 shadow-soft">

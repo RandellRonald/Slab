@@ -111,7 +111,7 @@ export function HomePage() {
               <div className="slab-process__dashboard-row"><span>JCB Backhoe</span><b>Available</b></div>
               <div className="slab-process__dashboard-row"><span>Mobile Crane</span><b>Available</b></div>
               <div className="slab-process__dashboard-row"><span>Standard Tipper</span><b>Available</b></div>
-              <div className="slab-process__dashboard-stats"><span><b>12</b> providers found</span><span><b>â‚¹8,500</b> estimate</span><span><b>18 min</b> nearest</span></div>
+              <div className="slab-process__dashboard-stats"><span><b>12</b> providers found</span><span><b>₹8,500</b> estimate</span><span><b>18 min</b> nearest</span></div>
             </div>
             <div className="slab-process__route"><b>Request<br />received</b><i /><b>Matching<br />providers</b><i /><b>Provider<br />confirmed</b><i /><b>Equipment<br />dispatched</b></div>
           </article>
@@ -152,7 +152,7 @@ export function HomePage() {
                 ["Equipment", "JCB / Backhoe"],
                 ["Location", "Ernakulam"],
                 ["Date", "Tomorrow"],
-                ["Estimate", "â‚¹8,500"]
+                ["Estimate", "₹8,500"]
               ]}
               action="Book"
               Icon={CalendarDays}
@@ -216,7 +216,7 @@ export function HomePage() {
             ["2", "Tippers", "Site logistics"]
           ].map(([quantity, machine, label]) => (
             <div className="slab-bulk-booking__equipment" key={machine}>
-              <strong>{quantity} Ã—</strong>
+              <strong>{quantity} ×</strong>
               <div>
                 <b>{machine}</b>
                 <span>{label}</span>

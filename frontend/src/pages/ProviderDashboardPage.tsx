@@ -159,7 +159,7 @@ export function ProviderDashboardPage() {
       <section className="rounded-lg border border-slab-border bg-white p-5 shadow-soft">
         <p className="text-sm font-semibold text-slab-muted">Primary equipment and operator</p>
         <p className="mt-1 text-xl font-black text-slab-ink">{dashboard?.primary_equipment?.display_name || "Equipment setup required"}</p>
-        <p className="mt-1 text-sm text-slab-muted">{dashboard?.primary_equipment?.registration_number || "Equipment number pending"} Â· {dashboard?.primary_equipment?.status || "unavailable"}</p>
+        <p className="mt-1 text-sm text-slab-muted">{dashboard?.primary_equipment?.registration_number || "Equipment number pending"} · {dashboard?.primary_equipment?.status || "unavailable"}</p>
       </section>
 
       {error ? <ErrorState title="Provider dashboard error" message={error} /> : null}
@@ -240,7 +240,7 @@ export function ProviderDashboardPage() {
           {dashboard?.scheduled_work?.length ? dashboard.scheduled_work.map((job) => (
             <article key={job.id} className="rounded-md border border-slab-border p-4">
               <p className="font-bold text-slab-ink">{job.customer?.full_name || "Customer"}</p>
-              <p className="mt-1 text-sm text-slab-muted">{job.items?.[0]?.equipment_type || "Equipment"} Â· {job.booking?.starts_at ? new Date(job.booking.starts_at).toLocaleString("en-IN", { weekday: "short", hour: "numeric", minute: "2-digit" }) : "Scheduled time"}</p>
+              <p className="mt-1 text-sm text-slab-muted">{job.items?.[0]?.equipment_type || "Equipment"} · {job.booking?.starts_at ? new Date(job.booking.starts_at).toLocaleString("en-IN", { weekday: "short", hour: "numeric", minute: "2-digit" }) : "Scheduled time"}</p>
               <p className="mt-1 text-sm text-slab-muted">Site: {job.booking?.site_location?.line1 || "Site location"}</p>
               <ActionRoute to={`/provider/jobs/${job.booking_id}`}>View work</ActionRoute>
             </article>
@@ -255,7 +255,7 @@ export function ProviderDashboardPage() {
             <article key={job.id} className="mt-4 rounded-md border border-slab-border p-4">
               <p className="text-xs font-black uppercase tracking-[0.14em] text-slab-primaryStrong">Job accepted</p>
               <p className="mt-1 font-bold text-slab-ink">{job.customer?.full_name || job.customer?.email || "Customer"}</p>
-              <p className="mt-1 text-sm font-semibold text-slab-muted">Booking #{job.booking_id.slice(0, 8)} Â· {formatStatus(job.booking?.status || "assigned")}</p>
+              <p className="mt-1 text-sm font-semibold text-slab-muted">Booking #{job.booking_id.slice(0, 8)} · {formatStatus(job.booking?.status || "assigned")}</p>
               <p className="mt-1 text-sm text-slab-muted">{job.booking?.site_location?.line1 ?? "Site details available in job view"}</p>
               <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_320px]">
                 <div className="grid gap-3 sm:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
@@ -385,7 +385,7 @@ function ProviderRequestCard({ request, accepted, onAccept, onDecline, prominent
         <SmallStat label="ETA" value={`${request.eta_minutes ?? "-"} min`} />
         <SmallStat label="Job time" value={request.booking?.starts_at ? new Date(request.booking.starts_at).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }) : "Immediate"} />
       </div>
-      {emergency ? <p className="mt-3 rounded-md border border-slab-border bg-white px-3 py-2 text-sm font-bold text-slab-ink">SLAB Emergency Booking Fee: â‚¹0 Â· urgent dispatch</p> : null}
+      {emergency ? <p className="mt-3 rounded-md border border-slab-border bg-white px-3 py-2 text-sm font-bold text-slab-ink">SLAB Emergency Booking Fee: ₹0 · urgent dispatch</p> : null}
       <CompactProviderMap request={request} />
       <div className="mt-4 grid gap-2 sm:grid-cols-1 md:grid-cols-2">
         <Button onClick={onAccept}><CheckCircle2 size={16} /> {accepted ? "JOB ACCEPTED" : "ACCEPT"}</Button>
@@ -517,7 +517,7 @@ const providerMapStyle = {
       type: "raster" as const,
       tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
       tileSize: 256,
-      attribution: "Â© OpenStreetMap contributors",
+      attribution: "© OpenStreetMap contributors",
     },
   },
   layers: [{ id: "osm", type: "raster" as const, source: "osm", minzoom: 0, maxzoom: 19 }],

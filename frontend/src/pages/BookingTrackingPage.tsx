@@ -1,4 +1,4 @@
-﻿import "maplibre-gl/dist/maplibre-gl.css";
+import "maplibre-gl/dist/maplibre-gl.css";
 import * as maplibregl from "maplibre-gl";
 import { Clock, LoaderCircle, MapPin, MessageSquare, Phone, Route, Star } from "lucide-react";
 import type { ReactNode } from "react";
@@ -266,7 +266,7 @@ export function BookingTrackingPage() {
           <section className="rounded-lg border border-slab-border bg-white p-5 shadow-soft">
             <h2 className="font-black text-slab-ink">Tracking signal</h2>
             <p className="mt-2 text-sm text-slab-muted">Last update: {lastUpdated}</p>
-            <p className="mt-1 text-sm text-slab-muted">Heading: {providerLocation?.heading ? `${Math.round(providerLocation.heading)}Â°` : "Awaiting provider GPS"}</p>
+            <p className="mt-1 text-sm text-slab-muted">Heading: {providerLocation?.heading ? `${Math.round(providerLocation.heading)}°` : "Awaiting provider GPS"}</p>
             {socketState !== "connected" ? <p className="mt-3 flex items-center gap-2 text-sm font-semibold text-slab-muted"><LoaderCircle className="animate-spin" size={15} /> Reconnecting and refetching latest state</p> : null}
           </section>
         </aside>
